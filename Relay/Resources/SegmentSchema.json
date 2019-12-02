@@ -1,0 +1,345 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://segmentproxy.com/Resources/SegmentSchema.json",
+  "title": "Segment Event",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^(identify|group|track|page|screen|alias)$",
+      "description": "Type of message, corresponding to the API method: `'identify'`, `'group'`, `'track'`, `'page'`, `'screen'` or `'alias'`"
+    },
+    "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+    "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+    "anonymousId":  {"type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+    "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+    "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
+    "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+    "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+    "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+    "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+  },
+  "required": ["type", "timestamp","messageId","context","version"],
+  "additionalProperties": false,
+  "definitions": {
+    "Context": {
+      "type":"object",
+      "description":"Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail",
+      "properties": {
+        "active":     { "type": "boolean", "description": "Whether a user is active <p>This is usually used to flag an .identify() call to just update the traits but not “last seen.”</p>" },
+        "app":        { "$ref": "#/definitions/App", "description":"dictionary of information about the current application, containing name, version and build. <p>This is collected automatically from our mobile libraries when possible.</p>" },
+        "campaign":   { "$ref": "#/definitions/Campaign", "description":"Dictionary of information about the campaign that resulted in the API call, containing name, source, medium, term and content <p>This maps directly to the common UTM campaign parameters.</p>" },
+        "device":     { "$ref": "#/definitions/Device", "description":"Dictionary of information about the device, containing id, manufacturer, model, name, type and version" },
+        "ip":         { "$ref": "#/definitions/vtIPAddress", "description":"Current user’s IP address" },
+        "library":    { "$ref": "#/definitions/Library", "description":"Dictionary of information about the library making the requests to the API, containing name and version" },
+        "locale":     { "type": "string", "description":"Locale string for the current user, for example en-US" },
+        "location":   { "$ref": "#/definitions/Location", "description":"Dictionary of information about the user’s current location, containing city, country, latitude, longitude, region and speed" },
+        "network":    { "$ref": "#/definitions/Network", "description":"Dictionary of information about the current network connection, containing bluetooth, carrier, cellular and wifi" },
+        "os":         { "$ref": "#/definitions/OS", "description":"Dictionary of information about the operating system, containing name and version" },
+        "page":       { "$ref": "#/definitions/Page", "description":"Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url <p>Automatically collected by Analytics.js.</p>" },
+        "referer":    { "$ref": "#/definitions/Referrer", "description":"Dictionary of information about the way the user was referred to the website or app, containing type, name, url and link" },
+        "screen":     { "$ref": "#/definitions/Screen", "description":"Dictionary of information about the device’s screen, containing density, height and width" },
+        "timezone":   { "type": "string", "description":"Timezones are sent as tzdata strings to add user timezone information which might be stripped from the timestamp <p>Ex: America/New_York</p>" },
+        "groupId":    { "type": "string", "description":"Group / Account ID. <p>This is useful in B2B use cases where you need to attribute your non-group calls to a company or account. It is relied on by several Customer Success and CRM tools.</p>" },
+        "traits":     { "$ref": "#/definitions/Traits",  "description":"Dictionary of traits of the current user <p>This is useful in cases where you need to track an event, but also associate information from a previous identify call. You should fill this object the same way you would fill traits in an identify call.</p>" },
+        "userAgent":  { "type": "string", "description":"User agent of the device making the request" }
+      },
+      "required": ["active", "app","library"],
+      "patternProperties":{"^[a-z_]{3,}$": {}},
+      "minProperties":3,
+      "uniqueItems": true
+    },
+    "Integration" : {
+      "type":"object",
+      "properties": {},
+      "patternProperties":{"^[a-z_]{3,}$": { "type": "string"}},
+      "minProperties":1
+    }, 
+    "App": {
+      "type":"object",
+      "description":"Dictionary of information about the current application, containing name, version and build. <p>This is collected automatically from our mobile libraries when possible.</p>",
+      "properties": {
+        "name": { "type" : "string", "description": "" },
+        "version": { "type" : "string", "description": "" },
+        "build": { "type" : "string", "description": "" },
+        "namespace": { "type" : "string", "description": "" },
+        "additionalProperties": false
+      },
+      "required": ["name", "version"],
+      "minProperties":2,
+      "uniqueItems": true
+    },
+    "Campaign": {
+      "type":"object",
+      "description":"Dictionary of information about the campaign that resulted in the API call, containing name, source, medium, term and content <p>This maps directly to the common UTM campaign parameters.</p>",
+      "properties": {
+        "name": { "type" : "string", "description": "" },
+        "source": { "type" : "string", "description": "" },
+        "medium": { "type" : "string", "description": "" },
+        "term": { "type" : "string", "description": "" },
+        "content": { "type" : "string", "description": "" },
+        "additionalProperties": false
+      },
+      "required": ["name", "source"],
+      "minProperties":2,
+      "uniqueItems": true
+    },
+    "Device": {
+      "type":"object",
+      "description":"Dictionary of information about the device, containing id, manufacturer, model, name, type and version",
+      "properties": {
+        "id": { "type" : "string", "description": "" },
+        "advertisingId": { "type" : "string", "description": "" },
+        "adTrackingEnabled": { "type" : "boolean", "description": "" },
+        "manufacturer": { "type" : "string", "description": "" },
+        "model": { "type" : "string", "description": "" },
+        "name": { "type" : "string", "description": "" },
+        "type": { "type" : "string", "description": "" },
+        "token": { "type" : "string", "description": "" },
+        "additionalProperties": false
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Library": {
+      "type":"object",
+      "description":"Dictionary of information about the library making the requests to the API, containing name and version",
+      "properties": {
+        "name": { "type" : "string", "description": "" },
+        "version": { "type" : "string", "description": "" }
+      },
+      "required": ["name", "version"],
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Location": {
+      "type":"object",
+      "description":"Dictionary of information about the user’s current location, containing city, country, latitude, longitude, region and speed",
+      "properties": {
+        "hasc": { "$ref": "#/definitions/vtHASC", "description":"Dictionary of information about the operating system, containing name and version" },
+        "country": { "type" : "string", "description": "" },
+        "city": { "type" : "string", "description": "" },
+        "latitude": { "type" : "number", "description": "" },
+        "longitude": { "type" : "number", "description": "" },
+        "speed": { "type" : "number", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Network": {
+      "type":"object",
+      "description":"Dictionary of information about the current network connection, containing bluetooth, carrier, cellular and wifi",
+      "properties": {
+        "bluetooth": { "type" : "boolean", "description": "" },
+        "cellular": { "type" : "boolean", "description": "" },
+        "wifi": { "type" : "boolean", "description": "" },
+        "carrier": { "type" : "string", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "OS": {
+      "type":"object",
+      "description":"Dictionary of information about the operating system, containing name and version",
+      "properties": {
+        "name": { "type" : "string", "description": "" },
+        "version": { "type" : "string", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Address": {
+      "type":"object",
+      "description":"",
+      "properties": {
+        "city": { "type" : "string", "description": "" },
+        "country": { "type" : "string", "description": "" },
+        "postalCode": { "type" : "string", "description": "" },
+        "state": { "type" : "string", "description": "" },
+        "street": { "type" : "string", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Company": {
+      "type":"object",
+      "description":"Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url <p>Automatically collected by Analytics.js.</p>",
+      "properties": {
+        "name": { "type" : "string", "description": "" },
+        "id": { "type" : "string", "description": "" },
+        "industry": { "type" : "string", "description": "" },
+        "employee_count": { "type" : "integer", "description": "" },
+        "plan": { "type" : "string", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Traits": {
+      "type":"object",
+      "description":"Dictionary of traits of the current user <p>This is useful in cases where you need to track an event, but also associate information from a previous identify call. You should fill this object the same way you would fill traits in an identify call.</p>",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of a user <p> If you only pass a first and last name we’ll automatically fill in the full name for you.</p>"},
+        "age": { "type" : "number", "description": "Age of a user" },
+        "avatar": { "type" : "string", "description": "URL to an avatar image for the user" },
+        "birthday": { "type" : "string", "format": "date", "description": "URL to an avatar image for the user" },
+        "address": { "$ref" : "#/definitions/Address", "description": "Street address of a user optionally containing: city, country, postalCode, state or street" },
+        "company": { "$ref" : "#/definitions/Company", "description": "Company the user represents, optionally containing: name (a String), id (a String or Number), industry (a String), employee_count (a Number) or plan (a String)" },
+        "createdAt": { "$ref": "#/definitions/vtTimestamp", "description": "Date the user’s account was first created <p>We recommend ISO-8601 date strings.</p>"},
+        "description": { "type": "string", "description": "Description of the user"},
+        "email": { "type": "string", "description": "Email address of a user"},
+        "firstName": { "type": "string", "description": "First name of a user"},
+        "gender": { "type": "string", "description": "Gender of a user"},
+        "lastName": { "type": "string", "description": "Last name of a user"},
+        "phone": { "type": "string", "description": "Phone number of a user"},
+        "title": { "type": "string", "description": "Title of a user, usually related to their position at a specific company <p>Example: “VP of Engineering”</p>"},
+        "username": { "type": "string", "description": "User’s username <p> This should be unique to each user, like the usernames of Twitter or GitHub.</p>"},
+        "website": { "type": "string", "description": "Website of a user"}
+      },
+      "patternProperties":{"^[a-z_]{3,}$":{}},
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Page": {
+      "type":"object",
+      "description":"Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url <p>Automatically collected by Analytics.js.</p>",
+      "properties": {
+        "path": { "type" : "string", "description": "" },
+        "referrer": { "type" : "string", "description": "" },
+        "search": { "type" : "string", "description": "" },
+        "title": { "type" : "string", "description": "" },
+        "url": { "type" : "string", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Referrer": {
+      "type":"object",
+      "description":"Dictionary of information about the way the user was referred to the website or app, containing type, name, url and link",
+      "properties": {
+        "id": { "type" : "string", "description": "" },
+        "type": { "type" : "string", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Screen": {
+      "type":"object",
+      "description":"Dictionary of information about the device’s screen, containing density, height and width",
+      "properties": {
+        "width": { "type" : "integer", "description": "" },
+        "height": { "type" : "integer", "description": "" },
+        "density": { "type" : "integer", "description": "" }
+      },
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "Properties": {
+      "type":"object",
+      "description":"Event properties",
+      "properties": {
+        "products": {"type": "array", "items": {"$ref": "#/definitions/ProductLine"}}
+      },
+      "patternProperties":{"^[a-z_]{3,}$":{}},
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "ProductLine": {
+      "type":"object",
+      "description":"Dictionary of information about the device’s screen, containing density, height and width",
+      "properties": {
+        "product_id": { "type" : "string", "description": "Product id displayed on the list" },
+        "sku": { "type" : "string", "description": "Sku of the product being viewed" },
+        "category": { "type" : "string", "description": "Product category being viewed" },
+        "name": { "type" : "string", "description": "Name of the product being viewed" },
+        "brand": { "type" : "string", "description": "Brand associated with the product" },
+        "variant": { "type" : "string", "description": "Variant of the product (e.g. Black)" },
+        "price": { "type" : "number", "description": "Price ($) of the product being viewed" },
+        "quantity": { "type" : "number", "description": "Quantity of a product" },
+        "coupon": { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
+        "position": { "type" : "number", "description": "Position in the product list (ex. 3)" },
+        "url": { "type" : "string", "description": "URL of the product page" },
+        "image_url": { "type" : "string", "description": "Image url of the product" }
+      },
+      "required":[],
+      "uniqueItems": true
+    },
+    "vtTimestamp": {
+      "type":"string",
+      "format":"date-time"
+    },
+    "vtDuration": {
+      "type":"string",
+      "format":"duration"
+    },
+    "vtDate": {
+      "type":"string",
+      "format":"date"
+    },
+    "vtTime": {
+      "type":"string",
+      "format":"time"
+    },
+    "vtIP": {
+      "type": "string",
+      "oneOf": [
+        { "format": "ipv4" },
+        { "format": "ipv6" }
+      ]      
+    },
+    "vtIPv4": {
+      "type": "string",
+      "format": "ipv4"
+    },
+    "vtIPv6": {
+      "type": "string",
+      "format": "ipv6"
+    },
+    "vtEmailAddress": {
+      "type": "string",
+      "oneOf": [
+        { "format": "email" },
+        { "format": "idn-email" }
+      ]      
+    },
+    "vtHostname": {
+      "type": "string",
+      "oneOf": [
+        { "format": "hostname" },
+        { "format": "idn-hostname" }
+      ]      
+    },
+    "vtUUID": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "vtResourceIdentifier": {
+      "type": "string",
+      "oneOf": [
+        { "format": "url" },
+        { "format": "uri-reference" },
+        { "format": "iri" },
+        { "format": "iri-reference" }
+      ],
+    },
+    "vtRegExp": {
+      "type": "string",
+      "format": "regex"
+    },
+    "vtHASC": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$"
+    },
+    "vtCountryCode": {
+      "type": "string",
+      "pattern": "^[a-z_]{2,3}$"
+    },
+    "vtGeoLocation": {
+      "type": "string",
+      "pattern": "^[a-z_]{3,}$"
+    },
+    "vtReqString": {
+      "type":"string",
+      "pattern":"^(.){1,}$"
+    }
+  }
+}

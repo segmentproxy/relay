@@ -1,0 +1,181 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://segmentproxy.com/Resources/PropertiesSchema.json",
+  "title": "Properties Event",
+  "type": "object",
+  "properties": {
+    "properties": {
+      "$ref": "#/definitions/Properties",
+      "description": "Event properties map"
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "definitions": {
+    "Phone": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "number": { "type": "string" },
+        "carrier": { "type": "object" },
+        "location": { "type": "object" },
+        "type": { "type": "object" }
+      },
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Email": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": { "type": "string" }
+      },
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Service": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "variant": { "type": "string" },
+        "sku": { "type": "string" },
+        "category": { "type" : "string", "description": "Product category being viewed" },
+        "tags": { "type": "array", "items": {"type":  "string"}}
+      },
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Product": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "product_id": { "type" : "string", "description": "Product id displayed on the list" },
+        "sku": { "type" : "string", "description": "Sku of the product being viewed" },
+        "category": { "type" : "string", "description": "Product category being viewed" },
+        "name": { "type" : "string", "description": "Name of the product being viewed" },
+        "brand": { "type" : "string", "description": "Brand associated with the product" },
+        "variant": { "type" : "string", "description": "Variant of the product (e.g. Black)" },
+        "price": { "type" : "number", "description": "Price ($) of the product being viewed" },
+        "quantity": { "type" : "number", "description": "Quantity of a product" },
+        "coupon": { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
+        "position": { "type" : "number", "description": "Position in the product list (ex. 3)" },
+        "url": { "type" : "string", "description": "URL of the product page" },
+        "image_url": { "type" : "string", "description": "Image url of the product" },
+        "tags": { "type": "array", "items": {"type":  "string"}}
+      },
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Equipment": {
+      "type": "object",
+      "description": "",
+      "properties": {
+      },
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "TargetGroup": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Employee": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Location": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Issue": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Document": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Payment": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Content": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "ContentProvider": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Order": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "RatePlan": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Address": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Invoice": {
+      "type": "object",
+      "description": "",
+      "properties": {},
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    }
+  }
+}
