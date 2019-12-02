@@ -4,10 +4,12 @@
   "title": "Properties Event",
   "type": "object",
   "properties": {
-    "properties": {
-      "$ref": "#/definitions/Properties",
-      "description": "Event properties map"
-    }
+    "phone": {"$ref": "#/definitions/Phone", "description": ""},
+    "origin_phone": {"$ref": "#/definitions/Phone", "description": ""},
+    "destination_phone": {"$ref": "#/definitions/Phone", "description": ""},
+    "email": {"$ref": "#/definitions/Email", "description": ""},
+    "customer": {"$ref": "#/definitions/Customer", "description": ""},
+    "notification": {"$ref": "#/definitions/Notification", "description": ""}
   },
   "required": [],
   "additionalProperties": false,
@@ -16,10 +18,10 @@
       "type": "object",
       "description": "",
       "properties": {
-        "number": { "type": "string" },
-        "carrier": { "type": "object" },
-        "location": { "type": "object" },
-        "type": { "type": "object" }
+        "number":   { "type": "string", "pattern": "" },
+        "carrier":  { "$ref": "#/definitions/Carrier", "description":"" },
+        "location": { "$ref": "#/definitions/Location", "description":"" },
+        "type":     { "type": "string" }
       },
       "required": [],
       "minProperties": 2,
@@ -32,6 +34,30 @@
         "address": { "type": "string" }
       },
       "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Customer": {
+      "type": "object",
+      "description": "",
+      "$comment": "Should this be traits from core properties",
+      "properties": {
+        "customer_id": { "type": "string" }
+      },
+      "required": ["customer_id"],
+      "minProperties": 1,
+      "uniqueItems": true
+    },
+    "Notification": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "notification_id":  { "type": "string" },
+        "type":             { "type": "string" },
+        "subject":          { "type": "string" },
+        "payload":          { "type": "string" }
+      },
+      "required": ["notification_id", "type"],
       "minProperties": 2,
       "uniqueItems": true
     },
@@ -72,6 +98,16 @@
       "minProperties": 2,
       "uniqueItems": true
     },
+    "Carrier": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "location": { "$ref": "#/definitions/Location", "description":"" }
+      },
+      "required": [],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
     "Equipment": {
       "type": "object",
       "description": "",
@@ -100,7 +136,9 @@
     "Location": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "hasc": { "$ref": "#/definitions/Location" }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -164,7 +202,9 @@
     "Address": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true

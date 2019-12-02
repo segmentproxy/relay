@@ -30,7 +30,7 @@
         "app":        { "$ref": "#/definitions/App", "description":"dictionary of information about the current application, containing name, version and build. <p>This is collected automatically from our mobile libraries when possible.</p>" },
         "campaign":   { "$ref": "#/definitions/Campaign", "description":"Dictionary of information about the campaign that resulted in the API call, containing name, source, medium, term and content <p>This maps directly to the common UTM campaign parameters.</p>" },
         "device":     { "$ref": "#/definitions/Device", "description":"Dictionary of information about the device, containing id, manufacturer, model, name, type and version" },
-        "ip":         { "$ref": "#/definitions/vtIPAddress", "description":"Current user’s IP address" },
+        "ip":         { "$ref": "#/definitions/vtIP", "description":"Current user’s IP address" },
         "library":    { "$ref": "#/definitions/Library", "description":"Dictionary of information about the library making the requests to the API, containing name and version" },
         "locale":     { "type": "string", "description":"Locale string for the current user, for example en-US" },
         "location":   { "$ref": "#/definitions/Location", "description":"Dictionary of information about the user’s current location, containing city, country, latitude, longitude, region and speed" },
@@ -152,11 +152,11 @@
       "type":"object",
       "description":"",
       "properties": {
-        "city": { "type" : "string", "description": "" },
-        "country": { "type" : "string", "description": "" },
-        "postalCode": { "type" : "string", "description": "" },
-        "state": { "type" : "string", "description": "" },
-        "street": { "type" : "string", "description": "" }
+        "city":         { "type" : "string", "description": "" },
+        "country":      { "type" : "string", "description": "" },
+        "postalCode":   { "type" : "string", "description": "" },
+        "state":        { "type" : "string", "description": "" },
+        "street":       { "type" : "string", "description": "" }
       },
       "minProperties":1,
       "uniqueItems": true
@@ -226,9 +226,9 @@
       "type":"object",
       "description":"Dictionary of information about the device’s screen, containing density, height and width",
       "properties": {
-        "width": { "type" : "integer", "description": "" },
-        "height": { "type" : "integer", "description": "" },
-        "density": { "type" : "integer", "description": "" }
+        "width":    { "type" : "integer", "description": "" },
+        "height":   { "type" : "integer", "description": "" },
+        "density":  { "type" : "integer", "description": "" }
       },
       "minProperties":1,
       "uniqueItems": true
@@ -301,6 +301,10 @@
         { "format": "idn-email" }
       ]      
     },
+    "vtPhoneNumber": {
+      "type": "string",
+      "pattern": ""
+    },
     "vtHostname": {
       "type": "string",
       "oneOf": [
@@ -319,7 +323,7 @@
         { "format": "uri-reference" },
         { "format": "iri" },
         { "format": "iri-reference" }
-      ],
+      ]
     },
     "vtRegExp": {
       "type": "string",
