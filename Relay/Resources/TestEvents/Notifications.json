@@ -15,8 +15,16 @@
     }
   },
   "properties": {
-    "dst_phone": {"nr":"33"},
-    "notification": {"name":"Inneign er að klárast", "payload":"base64-enc"}
+    "dst_phone": {
+      "nr":"+354-8964896"
+    },
+    "notification": {
+      "name":"Inneign er að klárast", 
+      "payload":"base64-enc",
+    },
+    "service": {
+      
+    }       
   },
   "userId": "°<some-valid-customer-id>",
   "messageId":"<deterministic message id from signature>",

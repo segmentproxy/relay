@@ -10,8 +10,8 @@
     "email":          {"$ref": "#/definitions/Email", "description": ""},
     "customer":       {"$ref": "#/definitions/Customer", "description": ""},
     "notification":   {"$ref": "#/definitions/Notification", "description": ""},
-    "regarding":      {"type": "string", "description": ""},
-    "crm_entity_id":  {"type": "string", "description": ""}
+    "regarding":      {"type": "#/definitions/CrmID", "description": ""},
+    "crm_entity_id":  {"type": "#/definitions/CrmID", "description": ""}
   },
   "required": [],
   "additionalProperties": false,
@@ -223,6 +223,8 @@
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
-    }
+    },
+    
+    "CrmID": {"type": "string", "minLength": 20}
   }
 }
