@@ -4,11 +4,11 @@
   "title": "Properties Event",
   "type": "object",
   "properties": {
-    "phone": {"$ref": "#/definitions/Phone", "description": ""},
-    "origin_phone": {"$ref": "#/definitions/Phone", "description": ""},
-    "destination_phone": {"$ref": "#/definitions/Phone", "description": ""},
-    "email": {"$ref": "#/definitions/Email", "description": ""},
-    "customer": {"$ref": "#/definitions/Customer", "description": ""},
+    "phone":        {"$ref": "#/definitions/Phone", "description": ""},
+    "org_phone":    {"$ref": "#/definitions/Phone", "description": ""},
+    "dst_phone":    {"$ref": "#/definitions/Phone", "description": ""},
+    "email":        {"$ref": "#/definitions/Email", "description": ""},
+    "customer":     {"$ref": "#/definitions/Customer", "description": ""},
     "notification": {"$ref": "#/definitions/Notification", "description": ""}
   },
   "required": [],
@@ -18,23 +18,21 @@
       "type": "object",
       "description": "",
       "properties": {
-        "number":   { "type": "string", "pattern": "" },
+        "nr":       { "type": "string", "pattern": "" },
         "carrier":  { "$ref": "#/definitions/Carrier", "description":"" },
         "location": { "$ref": "#/definitions/Location", "description":"" },
         "type":     { "type": "string" }
       },
-      "required": [],
-      "minProperties": 2,
+      "required": ["nr"],
       "uniqueItems": true
     },
     "Email": {
       "type": "object",
       "description": "",
       "properties": {
-        "address": { "type": "string" }
+        "address":  { "type": "string", "format": "email" }
       },
-      "required": [],
-      "minProperties": 2,
+      "required": ["address"],
       "uniqueItems": true
     },
     "Customer": {
@@ -42,66 +40,65 @@
       "description": "",
       "$comment": "Should this be traits from core properties",
       "properties": {
-        "customer_id": { "type": "string" }
+        "id": { "type": "string" }
       },
       "required": ["customer_id"],
-      "minProperties": 1,
       "uniqueItems": true
     },
     "Notification": {
       "type": "object",
       "description": "",
       "properties": {
-        "notification_id":  { "type": "string" },
-        "type":             { "type": "string" },
-        "subject":          { "type": "string" },
-        "payload":          { "type": "string" }
+        "id":       { "type": "string" },
+        "type":     { "type": "string" },
+        "subject":  { "type": "string" },
+        "payload":  { "type": "string" }
       },
       "required": ["notification_id", "type"],
-      "minProperties": 2,
       "uniqueItems": true
     },
     "Service": {
       "type": "object",
       "description": "",
       "properties": {
-        "name": { "type": "string" },
-        "type": { "type": "string" },
-        "variant": { "type": "string" },
-        "sku": { "type": "string" },
+        "name":     { "type": "string" },
+        "type":     { "type": "string" },
+        "variant":  { "type": "string" },
+        "sku":      { "type": "string" },
         "category": { "type" : "string", "description": "Product category being viewed" },
-        "tags": { "type": "array", "items": {"type":  "string"}}
+        "tags":     { "type": "array", "items": {"type":  "string"}, "minItems": 1}
       },
-      "required": [],
-      "minProperties": 2,
+      "required": ["name"],
       "uniqueItems": true
     },
     "Product": {
       "type": "object",
       "description": "",
       "properties": {
-        "product_id": { "type" : "string", "description": "Product id displayed on the list" },
-        "sku": { "type" : "string", "description": "Sku of the product being viewed" },
-        "category": { "type" : "string", "description": "Product category being viewed" },
-        "name": { "type" : "string", "description": "Name of the product being viewed" },
-        "brand": { "type" : "string", "description": "Brand associated with the product" },
-        "variant": { "type" : "string", "description": "Variant of the product (e.g. Black)" },
-        "price": { "type" : "number", "description": "Price ($) of the product being viewed" },
-        "quantity": { "type" : "number", "description": "Quantity of a product" },
-        "coupon": { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
-        "position": { "type" : "number", "description": "Position in the product list (ex. 3)" },
-        "url": { "type" : "string", "description": "URL of the product page" },
-        "image_url": { "type" : "string", "description": "Image url of the product" },
-        "tags": { "type": "array", "items": {"type":  "string"}}
+        "id":         { "type" : "string", "description": "Product id displayed on the list" },
+        "sku":        { "type" : "string", "description": "Sku of the product being viewed" },
+        "category":   { "type" : "string", "description": "Product category being viewed" },
+        "name":       { "type" : "string", "description": "Name of the product being viewed" },
+        "brand":      { "type" : "string", "description": "Brand associated with the product" },
+        "variant":    { "type" : "string", "description": "Variant of the product (e.g. Black)" },
+        "price":      { "type" : "number", "description": "Price ($) of the product being viewed" },
+        "quantity":   { "type" : "number", "description": "Quantity of a product" },
+        "coupon":     { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
+        "position":   { "type" : "number", "description": "Position in the product list (ex. 3)" },
+        "url":        { "type" : "string", "description": "URL of the product page" },
+        "image_url":  { "type" : "string", "description": "Image url of the product" },
+        "tags":       { "type": "array", "items": {"type":  "string"}}
       },
-      "required": [],
-      "minProperties": 2,
+      "required": ["id","sku","name"],
       "uniqueItems": true
     },
     "Carrier": {
       "type": "object",
       "description": "",
       "properties": {
+        "id":       { "type": "string" },
+        "name":     { "type": "string" },
+        "handle":   { "type": "string" },
         "location": { "$ref": "#/definitions/Location", "description":"" }
       },
       "required": [],
@@ -137,9 +134,12 @@
       "type": "object",
       "description": "",
       "properties": {
-        "hasc": { "$ref": "#/definitions/Location" }
+        "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode" },
+        "postal_code":  { "type": "string" },
+        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC" },
+        "geo":          { "$ref": "./SegmentSchema.json#/definitions/vtGeo" }
       },
-      "required": [],
+      "required": ["hasc","country_code"],
       "minProperties": 2,
       "uniqueItems": true
     },

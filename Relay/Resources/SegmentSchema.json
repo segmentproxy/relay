@@ -337,7 +337,7 @@
       "type": "string",
       "pattern": "^[a-z_]{2,3}$"
     },
-    "vtGeoLocation": {
+    "vtGeo": {
       "type": "string",
       "pattern": "^[a-z_]{3,}$"
     },
