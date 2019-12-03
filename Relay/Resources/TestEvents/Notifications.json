@@ -1,19 +1,24 @@
 ﻿{
+  "$schema": "../SegmentSchema.json#",
   "type": "track",
   "event": "Service Notification Sent",
-  "timestamp": "2019-03-12 08:00:00.0000",
+  "timestamp": "2019-03-12T08:00:00.0000",
   "context":  {
-    "App": {
-      "name": "Some App", 
+    "active":true,
+    "app": {
+      "name": "Some App",
       "version": "0.0.1",
     },
-    "Library": {
+    "library": {
       "name": "<language>",
       "version": "<version>"
     }
   },
   "properties": {
-    
+    "dst_phone": {"nr":"33"},
+    "notification": {"name":"Inneign er að klárast", "payload":"base64-enc"}
   },
-  "userId": ""
+  "userId": "°<some-valid-customer-id>",
+  "messageId":"<deterministic message id from signature>",
+  "version": "1"
 }

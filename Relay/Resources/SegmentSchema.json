@@ -21,7 +21,8 @@
         "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
         "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
-        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }},
+        "$schema":      { "type": "string", "$comment": "Included so json files can be edited with schema support"}
       },
       "required": ["type", "event", "timestamp","messageId", "context", "version"],
       "additionalProperties": false
