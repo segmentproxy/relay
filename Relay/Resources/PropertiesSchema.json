@@ -10,8 +10,8 @@
     "email":          {"$ref": "#/definitions/Email", "description": ""},
     "customer":       {"$ref": "#/definitions/Customer", "description": ""},
     "notification":   {"$ref": "#/definitions/Notification", "description": ""},
-    "regarding":      {"type": "#/definitions/CrmID", "description": ""},
-    "crm_entity_id":  {"type": "#/definitions/CrmID", "description": ""}
+    "regarding":      {"$ref": "#/definitions/CrmID", "description": ""},
+    "crm_entity_id":  {"$ref": "#/definitions/CrmID", "description": ""}
   },
   "required": [],
   "additionalProperties": false,
@@ -20,7 +20,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "nr":       { "type": "string", "pattern": "", "minLength": 7 },
+        "nr":       { "type": "string", "pattern": "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]*$", "minLength": 7},
         "carrier":  { "$ref": "#/definitions/Carrier", "description":"" },
         "location": { "$ref": "#/definitions/Location", "description":"" },
         "type":     { "type": "string" }
@@ -224,7 +224,6 @@
       "minProperties": 2,
       "uniqueItems": true
     },
-    
     "CrmID": {"type": "string", "minLength": 20}
   }
 }
