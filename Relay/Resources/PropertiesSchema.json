@@ -9,7 +9,8 @@
     "dst_phone":    {"$ref": "#/definitions/Phone", "description": ""},
     "email":        {"$ref": "#/definitions/Email", "description": ""},
     "customer":     {"$ref": "#/definitions/Customer", "description": ""},
-    "notification": {"$ref": "#/definitions/Notification", "description": ""}
+    "notification": {"$ref": "#/definitions/Notification", "description": ""},
+    "location":     {"$ref": "#/definitions/Location", "description": ""}
   },
   "required": [],
   "additionalProperties": false,
@@ -18,7 +19,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "nr":       { "type": "string", "pattern": "" },
+        "nr":       { "type": "string", "pattern": "", "minLength": 7 },
         "carrier":  { "$ref": "#/definitions/Carrier", "description":"" },
         "location": { "$ref": "#/definitions/Location", "description":"" },
         "type":     { "type": "string" }
@@ -30,7 +31,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "address":  { "type": "string", "format": "email" }
+        "address":  { "type": "string", "format": "email", "minLength": 5 }
       },
       "required": ["address"],
       "uniqueItems": true
@@ -49,7 +50,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":       { "type": "string" },
+        "id":       { "type": "string", "minLength": 1},
         "type":     { "type": "string" },
         "subject":  { "type": "string" },
         "payload":  { "type": "string" }
@@ -61,7 +62,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "name":     { "type": "string" },
+        "name":     { "type": "string", "minLength": 1 },
         "type":     { "type": "string" },
         "variant":  { "type": "string" },
         "sku":      { "type": "string" },
@@ -75,7 +76,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type" : "string", "description": "Product id displayed on the list" },
+        "id":         { "type" : "string", "description": "Product id displayed on the list", "minLength": 1 },
         "sku":        { "type" : "string", "description": "Sku of the product being viewed" },
         "category":   { "type" : "string", "description": "Product category being viewed" },
         "name":       { "type" : "string", "description": "Name of the product being viewed" },
@@ -96,7 +97,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":       { "type": "string" },
+        "id":       { "type": "string", "minLength": 1 },
         "name":     { "type": "string" },
         "handle":   { "type": "string" },
         "location": { "$ref": "#/definitions/Location", "description":"" }
@@ -134,9 +135,9 @@
       "type": "object",
       "description": "",
       "properties": {
-        "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode" },
-        "postal_code":  { "type": "string" },
-        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC" },
+        "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode", "minLength": 2, "maxLength": 3 },
+        "postal_code":  { "type": "string", "minLength": 3 },
+        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC", "minLength": 2, "minLength": 8 },
         "geo":          { "$ref": "./SegmentSchema.json#/definitions/vtGeo" }
       },
       "required": ["hasc","country_code"],
