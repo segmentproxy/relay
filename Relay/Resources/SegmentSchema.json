@@ -8,7 +8,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "pattern": "^(track)$",
+          "pattern": "^track$",
           "description": "Type of message, corresponding to the respective API method"
         },
         "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
@@ -160,7 +160,6 @@
       },
       "additionalProperties": false,
       "required": ["name", "version"],
-      "minProperties":1,
       "uniqueItems": true
     },
     "Location": {

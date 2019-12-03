@@ -1,3 +1,19 @@
 ﻿{
-  
+  "type": "track",
+  "event": "Service Notification Sent",
+  "timestamp": "2019-03-12 08:00:00.0000",
+  "context":  {
+    "App": {
+      "name": "Some App", 
+      "version": "0.0.1",
+    },
+    "Library": {
+      "name": "<language>",
+      "version": "<version>"
+    }
+  },
+  "properties": {
+    
+  },
+  "userId": ""
 }
