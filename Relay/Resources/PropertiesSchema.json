@@ -12,9 +12,10 @@
     "notification":   {"$ref": "#/definitions/Notification", "description": ""},
     "regarding":      {"$ref": "#/definitions/CrmID", "description": ""},
     "crm_entity_id":  {"$ref": "#/definitions/CrmID", "description": ""}
+    "service":        {"$ref": "#/definitions/Service", "description": ""}
   },
   "required": [],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "definitions": {
     "Phone": {
       "type": "object",

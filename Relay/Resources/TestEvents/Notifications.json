@@ -23,8 +23,8 @@
       "payload":"base64-enc",
     },
     "service": {
-      
-    }       
+      "name": "<fjarskiptaþjónusta>"
+    }
   },
   "userId": "°<some-valid-customer-id>",
   "messageId":"<deterministic message id from signature>",

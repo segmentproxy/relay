@@ -300,7 +300,7 @@
       "properties": {
         "products": {"type": "array", "items": {"$ref": "#/definitions/ProductLine"}}
       },
-      "additionalProperties": false,
+      "additionalProperties": true,
       "patternProperties":{"^[a-z_]{3,}$":{}},
       "minProperties":1,
       "uniqueItems": true
