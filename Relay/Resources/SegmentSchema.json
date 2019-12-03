@@ -388,6 +388,13 @@
         { "format": "iri-reference" }
       ]
     },
+    "vtEmail": {
+      "type": "string",
+      "oneOf": [
+        { "format": "email" },
+        { "format": "idn-email" }
+      ]
+    },
     "vtRegExp": {
       "type": "string",
       "format": "regex"

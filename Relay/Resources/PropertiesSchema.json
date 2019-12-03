@@ -21,10 +21,10 @@
       "type": "object",
       "description": "",
       "properties": {
-        "nr":       { "type": "string", "pattern": "^$", "minLength": 7},
-        "carrier":  { "$ref": "#/definitions/Carrier", "description":"" },
-        "location": { "$ref": "#/definitions/Location", "description":"" },
-        "type":     { "type": "string" }
+        "nr":         { "type": "string", "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?", "description":"ITU E.123 and E.164 phone number format"},
+        "type":       { "type": "string" },
+        "carrier":    { "$ref": "#/definitions/Carrier", "description":"" },
+        "location":   { "$ref": "#/definitions/Location", "description":"" }
       },
       "required": ["nr"],
       "uniqueItems": true
@@ -33,7 +33,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "address":  { "type": "string", "format": "email", "minLength": 5 }
+        "address":    { "$ref": "./SegmentSchema.json#/definitions/vtEmail" }
       },
       "required": ["address"],
       "uniqueItems": true
@@ -43,12 +43,12 @@
       "description": "",
       "$comment": "Should this be traits from core properties",
       "properties": {
-        "id": { "type": "string" },
-        "crm_id": { "$ref": "#/definitions/CrmID", "description":"" },
-        "name":  { "type": "string", "minLength": 5 },
-        "ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"" },
-        "address": { "$ref": "#/definitions/Address", "description":"" },
-        "parent": { "$ref": "#/definitions/Customer", "description":"" },
+        "id":         { "type": "string" },
+        "crm_id":     { "$ref": "#/definitions/CrmID", "description":"" },
+        "name":       { "type": "string", "minLength": 5 },
+        "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"" },
+        "address":    { "$ref": "#/definitions/Address", "description":"" },
+        "parent":     { "$ref": "#/definitions/Customer", "description":"" },
         "crm_parent": { "$ref": "#/definitions/CrmEntity", "description":"" }
       },
       "required": ["id"],
@@ -58,11 +58,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "method": {
-          "type": "string",
-          "pattern": "^(sms|email)$",
-          "description": "Method used to send the notification"
-        },
+        "method":     { "type": "string", "pattern": "^(sms|email)$", "description": "Method used to send the notification" },
         "type":       { "type": "string", "minLength": 10 },
         "subject":    { "type": "string", "minLength": 1 },
         "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html" }
@@ -110,10 +106,10 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":       { "type": "string", "minLength": 1 },
-        "name":     { "type": "string" },
-        "handle":   { "type": "string" },
-        "location": { "$ref": "#/definitions/Location", "description":"" }
+        "id":         { "type": "string", "minLength": 1 },
+        "name":       { "type": "string" },
+        "handle":     { "type": "string" },
+        "location":   { "$ref": "#/definitions/Location", "description":"" }
       },
       "required": [],
       "minProperties": 2,
@@ -123,11 +119,11 @@
       "type": "object",
       "description": "",
       "properties": {
-        "mac_address": {"type": "string"},
-        "type": {"type": "string"},
-        "brand": {"type": "string"},
-        "make": {"type": "string"},
-        "model": {"type": "string"}
+        "mac":        { "type": "string" },
+        "type":       { "type": "string" },
+        "brand":      { "type": "string" },
+        "make":       { "type": "string" },
+        "model":      { "type": "string" }
       },
       "required": ["type"],
       "uniqueItems": true
@@ -135,7 +131,9 @@
     "TargetGroup": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "name":       { "type": "string" }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -143,7 +141,10 @@
     "Employee": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "id":         { "type": "string" },
+        "name":       { "type": "string" }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -164,7 +165,13 @@
     "Issue": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "id":         { "type": "string" },
+        "name":       { "type": "string" },
+        "type":       { "type": "string" },
+        "category":   { "type": "string" },
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1}
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -172,7 +179,14 @@
     "Document": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "id":         { "type": "string" },
+        "name":       { "type": "string" },
+        "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html" },
+        "media_type": { "type": "string" },
+        "category":   { "type": "string" },
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1 }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -204,7 +218,10 @@
     "Order": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "id":         { "type": "string" },
+        "placed":     { "type": "string" }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -212,7 +229,10 @@
     "RatePlan": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "id":         { "type": "string" },
+        "name":       { "type": "string" }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -221,7 +241,12 @@
       "type": "object",
       "description": "",
       "properties": {
-        "location": { "$ref": "#/definitions/Location", "description":"" }
+        "street":     { "type" : "string", "description": "" },
+        "city":       { "type" : "string", "description": "" },
+        "country":    { "type" : "string", "description": "" },
+        "postal_code":{ "type" : "string", "description": "" },
+        "state":      { "type" : "string", "description": "" },
+        "location":   { "$ref": "#/definitions/Location", "description":"" }
       },
       "required": [],
       "minProperties": 2,
@@ -230,19 +255,27 @@
     "Invoice": {
       "type": "object",
       "description": "",
-      "properties": {},
+      "properties": {
+        "id":         { "type": "string" },
+        "created":    { "type": "string" }
+      },
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
     },
     "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"},
-    "CrmID": {"type": "string", "minLength": 32, "format":"uuid", "$comment": "guid"},
+    "CrmID": {
+      "type": "string",
+      "minLength": 32, 
+      "format":"uuid", 
+      "$comment": "guid"
+    },
     "CrmEntity": {
       "type": "object",
       "description": "",
       "properties": {
-        "id": { "$ref": "#/definitions/CrmID", "description":"" },
-        "type": {"type": "string", "$comment": "Regarding: Service, Contact"}
+        "id":         { "$ref": "#/definitions/CrmID", "description":"" },
+        "type":       { "type": "string", "$comment": "Regarding: Service, Contact"}
       },
       "required": [],
       "minProperties": 2,

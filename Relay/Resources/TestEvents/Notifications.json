@@ -7,7 +7,7 @@
     "active":true,
     "app": {
       "name": "Some App",
-      "version": "0.0.1",
+      "version": "0.0.1"
     },
     "library": {
       "name": "<language>",
