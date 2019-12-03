@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\stefa\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\stefa\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_Relay.1453734435.00" t="ExcludeRecursive" />
-    <e p="C:\Users\stefa\Projects\Relay\Relay" t="IncludeFlat">
+    <e p="C:\Users\stefan\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\stefan\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_Relay.152999314.00" t="ExcludeRecursive" />
+    <e p="C:\Users\stefan\Projects\Relay" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="Relay" t="IncludeRecursive">
         <e p="appsettings.Development.json" t="Include" />

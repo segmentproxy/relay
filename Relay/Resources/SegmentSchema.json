@@ -8,7 +8,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "pattern": "^(identify|group|track|page|screen|alias)$",
+          "pattern": "^(track)$",
           "description": "Type of message, corresponding to the respective API method"
         },
         "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
@@ -48,7 +48,31 @@
       },
       "required": ["type", "name", "timestamp","messageId", "context", "version"],
       "additionalProperties": false
-    } 
+    },
+    {
+      "title": "Other Segment Event",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(identify|group|alias)$",
+          "description": "Type of message, corresponding to the respective API method"
+        },
+        "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
+        "name":         { "type": "string","description": "Name of the page or the screen", "$comment": "Used for Page and Screen.", "minLength": 10 },
+        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "anonymousId":  {"type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+        "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
+        "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+      },
+      "required": ["type", "event", "timestamp","messageId", "context", "version"],
+      "additionalProperties": false
+    }
   ],
   "definitions": {
     "Context": {
@@ -75,7 +99,6 @@
       },
       "required": ["active", "app","library"],
       "patternProperties":{"^[a-z_]{3,}$": {}},
-      "minProperties":3,
       "uniqueItems": true
     },
     "Integration" : {
@@ -88,29 +111,27 @@
       "type":"object",
       "description":"Dictionary of information about the current application, containing name, version and build. <p>This is collected automatically from our mobile libraries when possible.</p>",
       "properties": {
-        "name": { "type" : "string", "description": "" },
-        "version": { "type" : "string", "description": "" },
-        "build": { "type" : "string", "description": "" },
-        "namespace": { "type" : "string", "description": "" },
-        "additionalProperties": false
+        "name":       { "type" : "string", "description": "" },
+        "version":    { "type" : "string", "description": "" },
+        "build":      { "type" : "string", "description": "" },
+        "namespace":  { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "required": ["name", "version"],
-      "minProperties":2,
       "uniqueItems": true
     },
     "Campaign": {
       "type":"object",
       "description":"Dictionary of information about the campaign that resulted in the API call, containing name, source, medium, term and content <p>This maps directly to the common UTM campaign parameters.</p>",
       "properties": {
-        "name": { "type" : "string", "description": "" },
-        "source": { "type" : "string", "description": "" },
-        "medium": { "type" : "string", "description": "" },
-        "term": { "type" : "string", "description": "" },
-        "content": { "type" : "string", "description": "" },
-        "additionalProperties": false
+        "name":     { "type" : "string", "description": "" },
+        "source":   { "type" : "string", "description": "" },
+        "medium":   { "type" : "string", "description": "" },
+        "term":     { "type" : "string", "description": "" },
+        "content":  { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "required": ["name", "source"],
-      "minProperties":2,
       "uniqueItems": true
     },
     "Device": {
@@ -121,12 +142,12 @@
         "advertisingId": { "type" : "string", "description": "" },
         "adTrackingEnabled": { "type" : "boolean", "description": "" },
         "manufacturer": { "type" : "string", "description": "" },
-        "model": { "type" : "string", "description": "" },
-        "name": { "type" : "string", "description": "" },
-        "type": { "type" : "string", "description": "" },
-        "token": { "type" : "string", "description": "" },
-        "additionalProperties": false
+        "model":  { "type" : "string", "description": "" },
+        "name":   { "type" : "string", "description": "" },
+        "type":   { "type" : "string", "description": "" },
+        "token":  { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -137,6 +158,7 @@
         "name": { "type" : "string", "description": "" },
         "version": { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "required": ["name", "version"],
       "minProperties":1,
       "uniqueItems": true
@@ -152,6 +174,7 @@
         "longitude": { "type" : "number", "description": "" },
         "speed": { "type" : "number", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -164,6 +187,7 @@
         "wifi": { "type" : "boolean", "description": "" },
         "carrier": { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -174,6 +198,7 @@
         "name": { "type" : "string", "description": "" },
         "version": { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -187,6 +212,7 @@
         "state":        { "type" : "string", "description": "" },
         "street":       { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -200,6 +226,7 @@
         "employee_count": { "type" : "integer", "description": "" },
         "plan": { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -224,6 +251,7 @@
         "username": { "type": "string", "description": "User’s username <p> This should be unique to each user, like the usernames of Twitter or GitHub.</p>"},
         "website": { "type": "string", "description": "Website of a user"}
       },
+      "additionalProperties": false,
       "patternProperties":{"^[a-z_]{3,}$":{}},
       "minProperties":1,
       "uniqueItems": true
@@ -238,6 +266,7 @@
         "title": { "type" : "string", "description": "" },
         "url": { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -248,6 +277,7 @@
         "id": { "type" : "string", "description": "" },
         "type": { "type" : "string", "description": "" }
       },
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -259,6 +289,8 @@
         "height":   { "type" : "integer", "description": "" },
         "density":  { "type" : "integer", "description": "" }
       },
+      "required": ["width","height"],
+      "additionalProperties": false,
       "minProperties":1,
       "uniqueItems": true
     },
@@ -268,6 +300,7 @@
       "properties": {
         "products": {"type": "array", "items": {"$ref": "#/definitions/ProductLine"}}
       },
+      "additionalProperties": false,
       "patternProperties":{"^[a-z_]{3,}$":{}},
       "minProperties":1,
       "uniqueItems": true
@@ -289,7 +322,8 @@
         "url": { "type" : "string", "description": "URL of the product page" },
         "image_url": { "type" : "string", "description": "Image url of the product" }
       },
-      "required":[],
+      "additionalProperties": false,
+      "required":["product_id","sku"],
       "uniqueItems": true
     },
     "vtTimestamp": {
