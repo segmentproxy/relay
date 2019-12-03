@@ -4,13 +4,11 @@
   "title": "Properties Event",
   "type": "object",
   "properties": {
-    "phone":        {"$ref": "#/definitions/Phone", "description": ""},
     "org_phone":    {"$ref": "#/definitions/Phone", "description": ""},
     "dst_phone":    {"$ref": "#/definitions/Phone", "description": ""},
     "email":        {"$ref": "#/definitions/Email", "description": ""},
     "customer":     {"$ref": "#/definitions/Customer", "description": ""},
-    "notification": {"$ref": "#/definitions/Notification", "description": ""},
-    "location":     {"$ref": "#/definitions/Location", "description": ""}
+    "notification": {"$ref": "#/definitions/Notification", "description": ""}
   },
   "required": [],
   "additionalProperties": false,
@@ -50,10 +48,10 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":       { "type": "string", "minLength": 1},
-        "type":     { "type": "string" },
-        "subject":  { "type": "string" },
-        "payload":  { "type": "string" }
+        "id":         { "type": "string", "minLength": 1},
+        "type":       { "type": "string" },
+        "subject":    { "type": "string" },
+        "payload":    { "type": "string" }
       },
       "required": ["notification_id", "type"],
       "uniqueItems": true
@@ -62,12 +60,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "name":     { "type": "string", "minLength": 1 },
-        "type":     { "type": "string" },
-        "variant":  { "type": "string" },
-        "sku":      { "type": "string" },
-        "category": { "type" : "string", "description": "Product category being viewed" },
-        "tags":     { "type": "array", "items": {"type":  "string"}, "minItems": 1}
+        "id":         { "type": "string" },
+        "name":       { "type": "string", "minLength": 1 },
+        "type":       { "type": "string" },
+        "variant":    { "type": "string" },
+        "sku":        { "type": "string" },
+        "category":   { "type": "string", "description": "Product category being viewed" },
+        "tags":       { "type": "array", "items": {"type":  "string"}, "minItems": 1}
       },
       "required": ["name"],
       "uniqueItems": true
@@ -76,18 +75,18 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type" : "string", "description": "Product id displayed on the list", "minLength": 1 },
-        "sku":        { "type" : "string", "description": "Sku of the product being viewed" },
-        "category":   { "type" : "string", "description": "Product category being viewed" },
-        "name":       { "type" : "string", "description": "Name of the product being viewed" },
-        "brand":      { "type" : "string", "description": "Brand associated with the product" },
-        "variant":    { "type" : "string", "description": "Variant of the product (e.g. Black)" },
-        "price":      { "type" : "number", "description": "Price ($) of the product being viewed" },
-        "quantity":   { "type" : "number", "description": "Quantity of a product" },
-        "coupon":     { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
-        "position":   { "type" : "number", "description": "Position in the product list (ex. 3)" },
-        "url":        { "type" : "string", "description": "URL of the product page" },
-        "image_url":  { "type" : "string", "description": "Image url of the product" },
+        "id":         { "type": "string", "description": "Product id displayed on the list", "minLength": 1 },
+        "sku":        { "type": "string", "description": "Sku of the product being viewed" },
+        "category":   { "type": "string", "description": "Product category being viewed" },
+        "name":       { "type": "string", "description": "Name of the product being viewed" },
+        "brand":      { "type": "string", "description": "Brand associated with the product" },
+        "variant":    { "type": "string", "description": "Variant of the product (e.g. Black)" },
+        "price":      { "type": "number", "description": "Price ($) of the product being viewed" },
+        "quantity":   { "type": "number", "description": "Quantity of a product" },
+        "coupon":     { "type": "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
+        "position":   { "type": "number", "description": "Position in the product list (ex. 3)" },
+        "url":        { "type": "string", "description": "URL of the product page" },
+        "image_url":  { "type": "string", "description": "Image url of the product" },
         "tags":       { "type": "array", "items": {"type":  "string"}}
       },
       "required": ["id","sku","name"],

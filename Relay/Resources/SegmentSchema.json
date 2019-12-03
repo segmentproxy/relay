@@ -1,26 +1,55 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://segmentproxy.com/Resources/SegmentSchema.json",
-  "title": "Segment Event",
-  "type": "object",
-  "properties": {
-    "type": {
-      "type": "string",
-      "pattern": "^(identify|group|track|page|screen|alias)$",
-      "description": "Type of message, corresponding to the API method: `'identify'`, `'group'`, `'track'`, `'page'`, `'screen'` or `'alias'`"
-    },
-    "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
-    "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
-    "anonymousId":  {"type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
-    "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
-    "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-    "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
-    "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
-    "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
-    "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
-  },
-  "required": ["type", "timestamp","messageId","context","version"],
-  "additionalProperties": false,
+  "oneOf": [ 
+    {
+      "title": "Segment Track Event",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(identify|group|track|page|screen|alias)$",
+          "description": "Type of message, corresponding to the respective API method"
+        },
+        "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
+        "name":         { "type": "string","description": "Name of the page or the screen", "$comment": "Used for Page and Screen.", "minLength": 10 },
+        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "anonymousId":  {"type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+        "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
+        "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+      },
+      "required": ["type", "event", "timestamp","messageId", "context", "version"],
+      "additionalProperties": false
+    }, 
+    {
+      "title": "Segment Page and Screen Events",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(page|screen)$",
+          "description": "Type of message, corresponding to the respective API method"
+        },
+        "name":         { "type": "string","description": "Name of the page or the screen", "$comment": "Used for Page and Screen.", "minLength": 10 },
+        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "anonymousId":  {"type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+        "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
+        "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+      },
+      "required": ["type", "name", "timestamp","messageId", "context", "version"],
+      "additionalProperties": false
+    } 
+  ],
   "definitions": {
     "Context": {
       "type":"object",

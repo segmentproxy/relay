@@ -24,6 +24,9 @@
         <e p="Resources" t="Include">
           <e p="PropertiesSchema.json" t="Include" />
           <e p="SegmentSchema.json" t="Include" />
+          <e p="TestEvents" t="Include">
+            <e p="Notifications.json" t="Include" />
+          </e>
         </e>
         <e p="Worker.cs" t="Include" />
       </e>
