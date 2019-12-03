@@ -4,11 +4,14 @@
   "title": "Properties Event",
   "type": "object",
   "properties": {
-    "org_phone":    {"$ref": "#/definitions/Phone", "description": ""},
-    "dst_phone":    {"$ref": "#/definitions/Phone", "description": ""},
-    "email":        {"$ref": "#/definitions/Email", "description": ""},
-    "customer":     {"$ref": "#/definitions/Customer", "description": ""},
-    "notification": {"$ref": "#/definitions/Notification", "description": ""}
+    "org_phone":      {"$ref": "#/definitions/Phone", "description": ""},
+    "dst_phone":      {"$ref": "#/definitions/Phone", "description": ""},
+    "rsp_phone":      {"$ref": "#/definitions/Phone", "description": ""},
+    "email":          {"$ref": "#/definitions/Email", "description": ""},
+    "customer":       {"$ref": "#/definitions/Customer", "description": ""},
+    "notification":   {"$ref": "#/definitions/Notification", "description": ""},
+    "regarding":      {"type": "string", "description": ""},
+    "crm_entity_id":  {"type": "string", "description": ""}
   },
   "required": [],
   "additionalProperties": false,
@@ -48,12 +51,16 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type": "string", "minLength": 1},
-        "type":       { "type": "string" },
-        "subject":    { "type": "string" },
-        "payload":    { "type": "string" }
+        "method": {
+          "type": "string",
+          "pattern": "^(sms|email)$",
+          "description": "Method used to send the notification"
+        },
+        "type":       { "type": "string", "minLength": 10 },
+        "subject":    { "type": "string", "minLength": 1 },
+        "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html" }
       },
-      "required": ["notification_id", "type"],
+      "required": ["method", "type"],
       "uniqueItems": true
     },
     "Service": {
