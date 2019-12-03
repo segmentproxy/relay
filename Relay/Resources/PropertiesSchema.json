@@ -75,14 +75,14 @@
       "description": "",
       "properties": {
         "id":         { "type": "string" },
+        "sku":        { "type": "string" },
         "name":       { "type": "string", "minLength": 1 },
         "type":       { "type": "string" },
         "variant":    { "type": "string" },
-        "sku":        { "type": "string" },
         "category":   { "type": "string", "description": "Product category being viewed" },
-        "tags":       { "type": "array", "items": {"type":  "string"}, "minItems": 1}
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1}
       },
-      "required": ["name"],
+      "required": ["name","type","id"],
       "uniqueItems": true
     },
     "Product": {
@@ -123,9 +123,13 @@
       "type": "object",
       "description": "",
       "properties": {
+        "mac_address": {"type": "string"},
+        "type": {"type": "string"},
+        "brand": {"type": "string"},
+        "make": {"type": "string"},
+        "model": {"type": "string"}
       },
-      "required": [],
-      "minProperties": 2,
+      "required": ["type"],
       "uniqueItems": true
     },
     "TargetGroup": {
@@ -150,8 +154,8 @@
       "properties": {
         "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode", "minLength": 2, "maxLength": 3 },
         "postal_code":  { "type": "string", "minLength": 3 },
-        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC", "minLength": 2, "mazLength": 8 },
-        "geo":          { "$ref": "./SegmentSchema.json#/definitions/vtGeo" }
+        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC" },
+        "geo":          { "type": "array", "items":  {"type": "number", "minLength": 2, "maxLength": 3}}
       },
       "required": ["hasc","country_code"],
       "minProperties": 2,

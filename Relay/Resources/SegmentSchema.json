@@ -394,6 +394,8 @@
     },
     "vtHASC": {
       "type": "string",
+      "minLength": 2, 
+      "mazLength": 8,
       "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$"
     },
     "vtCountryCode": {
