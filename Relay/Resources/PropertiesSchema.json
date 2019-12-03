@@ -11,7 +11,7 @@
     "customer":       {"$ref": "#/definitions/Customer", "description": ""},
     "notification":   {"$ref": "#/definitions/Notification", "description": ""},
     "regarding":      {"$ref": "#/definitions/CrmID", "description": ""},
-    "crm_entity_id":  {"$ref": "#/definitions/CrmID", "description": ""}
+    "crm_entity_id":  {"$ref": "#/definitions/CrmID", "description": ""},
     "service":        {"$ref": "#/definitions/Service", "description": ""}
   },
   "required": [],
