@@ -137,7 +137,7 @@
       "properties": {
         "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode", "minLength": 2, "maxLength": 3 },
         "postal_code":  { "type": "string", "minLength": 3 },
-        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC", "minLength": 2, "minLength": 8 },
+        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC", "minLength": 2, "mazLength": 8 },
         "geo":          { "$ref": "./SegmentSchema.json#/definitions/vtGeo" }
       },
       "required": ["hasc","country_code"],
