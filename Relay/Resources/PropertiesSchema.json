@@ -43,9 +43,15 @@
       "description": "",
       "$comment": "Should this be traits from core properties",
       "properties": {
-        "id": { "type": "string" }
+        "id": { "type": "string" },
+        "crm_id": { "$ref": "#/definitions/CrmID", "description":"" },
+        "name":  { "type": "string", "minLength": 5 },
+        "ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"" },
+        "address": { "$ref": "#/definitions/Address", "description":"" },
+        "parent": { "$ref": "#/definitions/Customer", "description":"" },
+        "crm_parent": { "$ref": "#/definitions/CrmEntity", "description":"" }
       },
-      "required": ["customer_id"],
+      "required": ["id"],
       "uniqueItems": true
     },
     "Notification": {
@@ -211,7 +217,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        
+        "location": { "$ref": "#/definitions/Location", "description":"" }
       },
       "required": [],
       "minProperties": 2,
@@ -225,11 +231,13 @@
       "minProperties": 2,
       "uniqueItems": true
     },
+    "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"},
+    "CrmID": {"type": "string", "minLength": 32, "format":"uuid", "$comment": "guid"},
     "CrmEntity": {
       "type": "object",
       "description": "",
       "properties": {
-        "id": {"type": "string", "minLength": 32, "$comment": "guid"},
+        "id": { "$ref": "#/definitions/CrmID", "description":"" },
         "type": {"type": "string", "$comment": "Regarding: Service, Contact"}
       },
       "required": [],
