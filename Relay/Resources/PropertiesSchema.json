@@ -3,6 +3,8 @@
   "$id": "https://segmentproxy.com/Resources/PropertiesSchema.json",
   "title": "EventProperties",
   "type": "object",
+  "description": "The properties commonly used by Nova. Additional properties can be added at will",
+  "$comment": "Please get familiar with the pest practices sending Business Events using the Segment format before adding arbitrary properties",
   "properties": {
     "org_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
     "dst_phone":          {"$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
@@ -10,14 +12,18 @@
     "org_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmail", "description": "The email address responsible for starting the action (sent from)."},
     "dst_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmail", "description": "The target email address."},
     "customer":           {"$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
+    "resp_customer":      {"$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)"},
     "notification":       {"$ref": "#/definitions/Correspondence", "description": "A notification being sent or being received."},
     "regarding":          {"$ref": "#/definitions/CrmEntity", "description": "The CRM entity that the action is regarding."},
     "service":            {"$ref": "#/definitions/Service", "description": "The Nova service that the action is regarding."},
     "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
     "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action ."},
-    "device":             {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to."}
-    "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."}
-    "order":              {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."}
+    "device":             {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to."},
+    "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
+    "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
+    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
+    "operator":           {"$ref": "#/definitions/Carrier", "description": "The carrier that this event message is sent for (Identify virtual operator under Nova)."},
+    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"}
   },
   "required": [],
   "additionalProperties": true,
@@ -25,20 +31,21 @@
   "definitions": {
     "Phone": {
       "type": "object",
-      "description": "",
+      "description": "Used to define a phone number with the option of keeping fairly detailed information about it.",
       "properties": {
         "nr":         { "$ref": "./SegmentSchema.json#/definitions/vtPhoneNumber", "description": "The phone number" },
         "type":       { "type": "string", "description": "The type of phone number (landline or mobile)", "pattern": "^(mobile|landline)$" },
         "carrier":    { "$ref": "#/definitions/Carrier", "description":"Information about the carrier responsible for the phone number and the home-region for the phone." },
         "location":   { "$ref": "#/definitions/Location", "description":"The current location of the phone number (country or more details)" }
       },
+      "additionalProperties": true,
       "required": ["nr"],
       "uniqueItems": true
     },
     "Customer": {
       "type": "object",
-      "description": "",
-      "$comment": "Should this be traits from core properties",
+      "description": "A customer record is used for each individual customer but currently the customer ID can be email, phone-number, social-security-nr or CRM ID",
+      "$comment": "Subsystems are only responsible to provide the available 'handle' for a customer and need to rely on de-duplication and correct resolution elsewhere",
       "properties": {
         "id":         { "type": "string", "description": "The ID of the customer used natively in the origin system" },
         "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The CRM ID of the customer" },
@@ -47,24 +54,28 @@
         "address":    { "$ref": "#/definitions/Address", "description":"The address of the customer ", "$comment": "Redundant with the Trait address  if we decide to use that solely." },
         "parent_customer": { "$ref": "#/definitions/Customer", "description":"The parent customer of this customer. (if this is a division or child)" }
       },
+      "additionalProperties": true,
       "required": ["id"],
       "uniqueItems": true
     },
     "Correspondence": {
       "type": "object",
-      "description": "",
+      "description": "Generic content container for any type of correspondence",
       "properties": {
         "method":     { "type": "string", "pattern": "^(sms|email|phone|letter)$", "description": "Method used to send the correspondence." },
         "type":       { "type": "string", "minLength": 10, "description": "Correspondence type if this is a standard correspondence ('other' if it is not)." },
         "subject":    { "type": "string", "minLength": 1, "description": "The subject line/title for the correspondence." },
-        "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." }
+        "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." },
+        "media_type": { "type": "string", "description": "Used if the payload content is not text/html" },
+        "filename":   { "type": "string", "description": "Used if the content needs to be downloadable as a specific file" }
       },
+      "additionalProperties": true,
       "required": ["method", "type"],
       "uniqueItems": true
     },
     "Service": {
       "type": "object",
-      "description": "",
+      "description": "Used to define a telecommunication service referred to by Business Events.",
       "properties": {
         "id":         { "type": "string", "description": "The ID of the telcom service used by the origin system." },
         "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
@@ -74,33 +85,32 @@
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
         "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
+      "additionalProperties": true,
       "required": ["name","type","id"],
       "uniqueItems": true
     },
     "Product": {
       "type": "object",
-      "description": "",
+      "description": "Product definition used for other products than teleco services. (Phones, Routers etc.)",
       "properties": {
-        "id":         { "type": "string", "description": "Product id displayed on the list", "minLength": 1 },
+        "product_id": { "type": "string", "description": "Product id displayed on the list", "minLength": 1 },
         "sku":        { "type": "string", "description": "Sku of the product being viewed" },
         "category":   { "type": "string", "description": "Product category being viewed" },
         "name":       { "type": "string", "description": "Name of the product being viewed" },
         "brand":      { "type": "string", "description": "Brand associated with the product" },
         "variant":    { "type": "string", "description": "Variant of the product (e.g. Black)" },
         "price":      { "type": "number", "description": "Price ($) of the product being viewed" },
-        "quantity":   { "type": "number", "description": "Quantity of a product" },
-        "coupon":     { "type": "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
-        "position":   { "type": "number", "description": "Position in the product list (ex. 3)" },
         "tags":       { "type": "array", "items": {"type":  "string"}},
         "url":        { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "URL of the product page" },
         "image_url":  { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "Image url of the product" }
       },
+      "additionalProperties": true,
       "required": ["id","sku","name"],
       "uniqueItems": true
     },
     "Carrier": {
       "type": "object",
-      "description": "",
+      "description": "Carrier definition with heretical structure and location information",
       "properties": {
         "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
         "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
@@ -111,6 +121,7 @@
       },
       "required": ["id","handle","name"],
       "minProperties": 2,
+      "additionalProperties": true,
       "uniqueItems": true
     },
     "Equipment": {
@@ -124,6 +135,7 @@
         "model":      { "type": "string", "description": "The model is the secondary product name (variant)." },
         "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the equipment if stationary." }
       },
+      "additionalProperties": true,
       "required": ["type"],
       "uniqueItems": true
     },
@@ -146,13 +158,14 @@
       },
       "required": [],
       "minProperties": 2,
+      "additionalProperties": true,
       "uniqueItems": true
     },
     "Location": {
       "type": "object",
-      "description": "",
+      "description": "Used to define location of and event or any 'owning' Business Entity. Location can be specified in any detail but country is the minimum requirement.",
       "properties": {
-        "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode", "minLength": 2, "maxLength": 3 },
+        "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode", "pattern":"^[A-Z]{2,3}$", "minLength": 2, "maxLength": 3 },
         "postal_code":  { "type": "string", "minLength": 3 },
         "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC" },
         "geo":          { "type": "array", "items":  {"type": "number", "minLength": 2, "maxLength": 3}}
@@ -163,15 +176,16 @@
     },
     "Issue": {
       "type": "object",
-      "description": "",
+      "description": "Defines Support and service issues",
       "properties": {
         "id":         { "type": "string" },
         "name":       { "type": "string" },
         "type":       { "type": "string" },
         "category":   { "type": "string" },
-        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1}
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1},
+        "description": { "type": "string" }
       },
-      "required": [],
+      "required": ["id","type"],
       "minProperties": 2,
       "uniqueItems": true
     },
@@ -193,9 +207,18 @@
     "Payment": {
       "type": "object",
       "description": "",
-      "properties": {},
-      "required": [],
-      "minProperties": 2,
+      "properties": {
+        "type": {"type": "string" },
+        "method": {"type": "string", "pattern": "^(cash|transfer|card|other)$"},
+        "org_account": {"type": "string"},
+        "dst_account": {"type": "string"},
+        "payment_card": {"type": "string"},
+        "amount": {"type": "string"},
+        "currency": {"type": "string"},
+        "components": {"type": "array", "items": {"type": "number"}}
+      },
+      "required": ["amount","currency","type","method"],
+      "minProperties": 5,
       "uniqueItems": true
     },
     "Content": {
@@ -218,10 +241,12 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type": "string" },
-        "placed":     { "type": "string" }
+        "id":               { "type": "string" },
+        "placed_timestamp": { "type": "string" },
+        "customer":         {"$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
+        "ordered_by":       { "type": "string" }
       },
-      "required": [],
+      "required": ["id"],
       "minProperties": 2,
       "uniqueItems": true
     },
@@ -232,7 +257,7 @@
         "id":         { "type": "string" },
         "name":       { "type": "string" }
       },
-      "required": [],
+      "required": ["id","name"],
       "minProperties": 2,
       "uniqueItems": true
     },
@@ -241,24 +266,30 @@
       "description": "",
       "properties": {
         "street":     { "type" : "string", "description": "" },
+        "street2":    { "type" : "string", "description": "" },
         "city":       { "type" : "string", "description": "" },
         "country":    { "type" : "string", "description": "" },
         "postal_code":{ "type" : "string", "description": "" },
+        "po_box":     { "type" : "string", "description": "" },
         "state":      { "type" : "string", "description": "" },
         "location":   { "$ref": "#/definitions/Location", "description":"" }
       },
-      "required": [],
-      "minProperties": 2,
+      "required": ["country","postal_code","city","street"],
+      "additionalProperties": true,
       "uniqueItems": true
     },
     "Invoice": {
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type": "string" },
-        "created":    { "type": "string" }
+        "id":           { "type": "string" },
+        "issued_date":  { "type": "string" },
+        "created_date": { "type": "string" },
+        "payment_date": { "type": "string" },
+        "due_date":     { "type": "string" }
       },
-      "required": [],
+      "required": ["id","issued_date"],
+      "additionalProperties": true,
       "minProperties": 2,
       "uniqueItems": true
     },
@@ -276,6 +307,7 @@
         "id":         { "$ref": "#/definitions/CrmID", "description":"" },
         "type":       { "type": "string", "$comment": "Regarding: Service, Contact"}
       },
+      "additionalProperties": true,
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
