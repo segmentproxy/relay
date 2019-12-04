@@ -6,18 +6,21 @@
   "description": "The properties commonly used by Nova. Additional properties can be added at will",
   "$comment": "Please get familiar with the pest practices sending Business Events using the Segment format before adding arbitrary properties",
   "properties": {
+    "importance":         {"type": "integer", "default": 1, "minimum": 0, "maximum": 5, "description": "How important is this event, How much is the impact of this event"},
     "org_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
     "dst_phone":          {"$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
     "rsp_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number responsible for the action being taken (the parent phone number)."},
     "org_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmail", "description": "The email address responsible for starting the action (sent from)."},
     "dst_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmail", "description": "The target email address."},
     "customer":           {"$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
-    "resp_customer":      {"$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)"},
+    "resp_customer":      {"$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)."},
+    "billed_customer":    {"$ref": "#/definitions/Customer", "description": "The customer paying for the customer."},
     "notification":       {"$ref": "#/definitions/Correspondence", "description": "A notification being sent or being received."},
     "regarding":          {"$ref": "#/definitions/CrmEntity", "description": "The CRM entity that the action is regarding."},
     "service":            {"$ref": "#/definitions/Service", "description": "The Nova service that the action is regarding."},
     "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
-    "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action ."},
+    "requested_by":       {"$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},
+    "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action."},
     "device":             {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to."},
     "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
@@ -305,10 +308,11 @@
       "description": "",
       "properties": {
         "id":         { "$ref": "#/definitions/CrmID", "description":"" },
-        "type":       { "type": "string", "$comment": "Regarding: Service, Contact"}
+        "type":       { "type": "string", "description": "Regarding: Service, Contact etc."},
+        "label":      { "type": "string", "description": "Readable name/label for the CRM entity"}
       },
       "additionalProperties": true,
-      "required": [],
+      "required": ["id","type"],
       "minProperties": 2,
       "uniqueItems": true
     }

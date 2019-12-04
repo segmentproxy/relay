@@ -4,7 +4,7 @@
   "title": "SegmentEvent",
   "oneOf": [ 
     {
-      "title": "Segment Track Event",
+      "title": "SegmentTrackEvent",
       "type": "object",
       "properties": {
         "type": {
@@ -29,7 +29,7 @@
       "additionalProperties": false
     }, 
     {
-      "title": "Segment Page and Screen Events",
+      "title": "SegmentPageScreenEvent",
       "type": "object",
       "properties": {
         "type": {
@@ -323,8 +323,8 @@
         "url":        { "type" : "string", "description": "URL of the product page" },
         "image_url":  { "type" : "string", "description": "Image url of the product" }
       },
-      "additionalProperties": false,
-      "required":["product_id","sku"],
+      "additionalProperties": true,
+      "required":["product_id"],
       "uniqueItems": true
     },
     "vtTimestamp": {
