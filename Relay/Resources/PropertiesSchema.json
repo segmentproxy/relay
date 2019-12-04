@@ -6,7 +6,7 @@
   "description": "The properties commonly used by Nova. Additional properties can be added at will",
   "$comment": "Please get familiar with the pest practices sending Business Events using the Segment format before adding arbitrary properties",
   "properties": {
-    "importance":         {"type": "integer", "default": 1, "minimum": 0, "maximum": 5, "description": "How important is this event, How much is the impact of this event"},
+    "importance":         {"type": "integer", "default": 1, "minimum": 0, "maximum": 5, "description": "How important is this event, How much is the impact of this event", "$comment": "0: logging only, 1:minor impact, 2:some impact, 3:considerable impact, 4:major impact, 5:critical/terminal impact. Also set on the server side for the event-type as a whole."},
     "org_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
     "dst_phone":          {"$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
     "rsp_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number responsible for the action being taken (the parent phone number)."},
@@ -21,7 +21,7 @@
     "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
     "requested_by":       {"$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},
     "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action."},
-    "device":             {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to."},
+    "device":             {"$ref": "#/definitions/Device", "description": "The device/equipment that this action responds to."},
     "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
     "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
@@ -53,6 +53,8 @@
         "id":         { "type": "string", "description": "The ID of the customer used natively in the origin system" },
         "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The CRM ID of the customer" },
         "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the customer" },
+        "spouse_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the spouse" },
+        "family_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the parent if this customer is a minor" },
         "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the customer using the segment.com schema for customer traits" },
         "address":    { "$ref": "#/definitions/Address", "description":"The address of the customer ", "$comment": "Redundant with the Trait address  if we decide to use that solely." },
         "parent_customer": { "$ref": "#/definitions/Customer", "description":"The parent customer of this customer. (if this is a division or child)" }
@@ -113,11 +115,11 @@
     },
     "Carrier": {
       "type": "object",
-      "description": "Carrier definition with heretical structure and location information",
+      "description": "Carrier/Operator definition with heretical structure and location information",
       "properties": {
         "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
+        "handle":         { "type": "string", "description": "the slug/handle or alternative ID for the carrier as used publicly/internationally" },
         "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
-        "handle":         { "type": "string", "description": "the slug, handle or alternative ID for the carrier as used publicly" },
         "details":        { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits" },
         "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the carrier ot this subsidiary of the carrier" },
         "parent_carrier": { "$ref": "#/definitions/Carrier", "description":"The parent carrier of this carrier. (if this is a division or child)" }
@@ -127,16 +129,16 @@
       "additionalProperties": true,
       "uniqueItems": true
     },
-    "Equipment": {
+    "Device": {
       "type": "object",
-      "description": "Used to attach activity feed entries to equipment and to provide details regarding the equipment.",
+      "description": "Used to attach activity feed entries to device and to provide details regarding the device.",
       "properties": {
-        "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the equipment." },
-        "type":       { "type": "string", "description": "The primary type of equipment", "pattern": "~(router|switch|mobile|phone|computer)$" },
-        "brand":      { "type": "string", "description": "The brand of the equipment manufacturer." },
+        "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the device." },
+        "type":       { "type": "string", "description": "The primary type of device", "pattern": "~(router|switch|mobile|phone|computer)$" },
+        "brand":      { "type": "string", "description": "The brand of the device manufacturer." },
         "make":       { "type": "string", "description": "The make is the primary product name." },
         "model":      { "type": "string", "description": "The model is the secondary product name (variant)." },
-        "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the equipment if stationary." }
+        "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the device if stationary." }
       },
       "additionalProperties": true,
       "required": ["type"],
