@@ -156,8 +156,8 @@
       "type":"object",
       "description":"Dictionary of information about the library making the requests to the API, containing name and version",
       "properties": {
-        "name": { "type" : "string", "description": "" },
-        "version": { "type" : "string", "description": "" }
+        "name":       { "type" : "string", "description": "" },
+        "version":    { "type" : "string", "description": "" }
       },
       "additionalProperties": false,
       "required": ["name", "version"],
@@ -167,12 +167,12 @@
       "type":"object",
       "description":"Dictionary of information about the user’s current location, containing city, country, latitude, longitude, region and speed",
       "properties": {
-        "hasc": { "$ref": "#/definitions/vtHASC", "description":"Dictionary of information about the operating system, containing name and version" },
-        "country": { "type" : "string", "description": "" },
-        "city": { "type" : "string", "description": "" },
-        "latitude": { "type" : "number", "description": "" },
-        "longitude": { "type" : "number", "description": "" },
-        "speed": { "type" : "number", "description": "" }
+        "hasc":       { "$ref": "#/definitions/vtHASC", "description":"Dictionary of information about the operating system, containing name and version" },
+        "country":    { "type" : "string", "description": "" },
+        "city":       { "type" : "string", "description": "" },
+        "latitude":   { "type" : "number", "description": "" },
+        "longitude":  { "type" : "number", "description": "" },
+        "speed":      { "type" : "number", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -182,10 +182,10 @@
       "type":"object",
       "description":"Dictionary of information about the current network connection, containing bluetooth, carrier, cellular and wifi",
       "properties": {
-        "bluetooth": { "type" : "boolean", "description": "" },
-        "cellular": { "type" : "boolean", "description": "" },
-        "wifi": { "type" : "boolean", "description": "" },
-        "carrier": { "type" : "string", "description": "" }
+        "bluetooth":  { "type" : "boolean", "description": "" },
+        "cellular":   { "type" : "boolean", "description": "" },
+        "wifi":       { "type" : "boolean", "description": "" },
+        "carrier":    { "type" : "string", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -195,8 +195,8 @@
       "type":"object",
       "description":"Dictionary of information about the operating system, containing name and version",
       "properties": {
-        "name": { "type" : "string", "description": "" },
-        "version": { "type" : "string", "description": "" }
+        "name":     { "type" : "string", "description": "" },
+        "version":  { "type" : "string", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -206,11 +206,11 @@
       "type":"object",
       "description":"",
       "properties": {
-        "city":         { "type" : "string", "description": "" },
-        "country":      { "type" : "string", "description": "" },
-        "postalCode":   { "type" : "string", "description": "" },
-        "state":        { "type" : "string", "description": "" },
-        "street":       { "type" : "string", "description": "" }
+        "city":           { "type" : "string", "description": "" },
+        "country":        { "type" : "string", "description": "" },
+        "postalCode":     { "type" : "string", "description": "" },
+        "state":          { "type" : "string", "description": "" },
+        "street":         { "type" : "string", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -220,11 +220,11 @@
       "type":"object",
       "description":"Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url <p>Automatically collected by Analytics.js.</p>",
       "properties": {
-        "name": { "type" : "string", "description": "" },
-        "id": { "type" : "string", "description": "" },
-        "industry": { "type" : "string", "description": "" },
+        "name":           { "type" : "string", "description": "" },
+        "id":             { "type" : "string", "description": "" },
+        "industry":       { "type" : "string", "description": "" },
         "employee_count": { "type" : "integer", "description": "" },
-        "plan": { "type" : "string", "description": "" }
+        "plan":           { "type" : "string", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -234,22 +234,22 @@
       "type":"object",
       "description":"Dictionary of traits of the current user <p>This is useful in cases where you need to track an event, but also associate information from a previous identify call. You should fill this object the same way you would fill traits in an identify call.</p>",
       "properties": {
-        "name": { "type": "string", "description": "Full name of a user <p> If you only pass a first and last name we’ll automatically fill in the full name for you.</p>"},
-        "age": { "type" : "number", "description": "Age of a user" },
-        "avatar": { "type" : "string", "description": "URL to an avatar image for the user" },
-        "birthday": { "type" : "string", "format": "date", "description": "URL to an avatar image for the user" },
-        "address": { "$ref" : "#/definitions/Address", "description": "Street address of a user optionally containing: city, country, postalCode, state or street" },
-        "company": { "$ref" : "#/definitions/Company", "description": "Company the user represents, optionally containing: name (a String), id (a String or Number), industry (a String), employee_count (a Number) or plan (a String)" },
-        "createdAt": { "$ref": "#/definitions/vtTimestamp", "description": "Date the user’s account was first created <p>We recommend ISO-8601 date strings.</p>"},
-        "description": { "type": "string", "description": "Description of the user"},
-        "email": { "type": "string", "description": "Email address of a user"},
-        "firstName": { "type": "string", "description": "First name of a user"},
-        "gender": { "type": "string", "description": "Gender of a user"},
-        "lastName": { "type": "string", "description": "Last name of a user"},
-        "phone": { "type": "string", "description": "Phone number of a user"},
-        "title": { "type": "string", "description": "Title of a user, usually related to their position at a specific company <p>Example: “VP of Engineering”</p>"},
-        "username": { "type": "string", "description": "User’s username <p> This should be unique to each user, like the usernames of Twitter or GitHub.</p>"},
-        "website": { "type": "string", "description": "Website of a user"}
+        "name":         { "type": "string", "description": "Full name of a user <p> If you only pass a first and last name we’ll automatically fill in the full name for you.</p>"},
+        "age":          { "type": "number", "description": "Age of a user" },
+        "avatar":       { "$ref": "#/definitions/vtUrl", "description": "URL to an avatar image for the user" },
+        "birthday":     { "$ref": "#/definitions/vtDate",  "description": "" },
+        "address":      { "$ref": "#/definitions/Address", "description": "Street address of a user optionally containing: city, country, postalCode, state or street" },
+        "company":      { "$ref": "#/definitions/Company", "description": "Company the user represents, optionally containing: name (a String), id (a String or Number), industry (a String), employee_count (a Number) or plan (a String)" },
+        "createdAt":    { "$ref": "#/definitions/vtTimestamp", "description": "Date the user’s account was first created <p>We recommend ISO-8601 date strings.</p>"},
+        "email":        { "$ref": "#/definitions/vtEmailAddress", "description": "Email address of a user"},
+        "firstName":    { "type": "string", "description": "First name of a user"},
+        "lastName":     { "type": "string", "description": "Last name of a user"},
+        "gender":       { "type": "string", "description": "Gender of a user"},
+        "phone":        { "$ref": "#/definitions/vtPhoneNumber",  "description": "" },
+        "title":        { "type": "string", "description": "Title of a user, usually related to their position at a specific company <p>Example: “VP of Engineering”</p>"},
+        "username":     { "type": "string", "description": "User’s username <p> This should be unique to each user, like the usernames of Twitter or GitHub.</p>"},
+        "website":      { "$ref": "#/definitions/vtPhoneNumber", "description": "Website of a user"},
+        "description":  { "type": "string", "description": "Description of the user"}
       },
       "additionalProperties": false,
       "patternProperties":{"^[a-z_]{3,}$":{}},
@@ -260,11 +260,11 @@
       "type":"object",
       "description":"Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url <p>Automatically collected by Analytics.js.</p>",
       "properties": {
-        "path": { "type" : "string", "description": "" },
-        "referrer": { "type" : "string", "description": "" },
-        "search": { "type" : "string", "description": "" },
-        "title": { "type" : "string", "description": "" },
-        "url": { "type" : "string", "description": "" }
+        "path":       { "type" : "string", "description": "" },
+        "referrer":   { "type" : "string", "description": "" },
+        "search":     { "type" : "string", "description": "" },
+        "title":      { "type" : "string", "description": "" },
+        "url":        { "$ref": "#/definitions/vtUrl", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -274,8 +274,8 @@
       "type":"object",
       "description":"Dictionary of information about the way the user was referred to the website or app, containing type, name, url and link",
       "properties": {
-        "id": { "type" : "string", "description": "" },
-        "type": { "type" : "string", "description": "" }
+        "id":       { "type" : "string", "description": "" },
+        "type":     { "type" : "string", "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -310,17 +310,17 @@
       "description":"Dictionary of information about the device’s screen, containing density, height and width",
       "properties": {
         "product_id": { "type" : "string", "description": "Product id displayed on the list" },
-        "sku": { "type" : "string", "description": "Sku of the product being viewed" },
-        "category": { "type" : "string", "description": "Product category being viewed" },
-        "name": { "type" : "string", "description": "Name of the product being viewed" },
-        "brand": { "type" : "string", "description": "Brand associated with the product" },
-        "variant": { "type" : "string", "description": "Variant of the product (e.g. Black)" },
-        "price": { "type" : "number", "description": "Price ($) of the product being viewed" },
-        "quantity": { "type" : "number", "description": "Quantity of a product" },
-        "coupon": { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
-        "position": { "type" : "number", "description": "Position in the product list (ex. 3)" },
-        "url": { "type" : "string", "description": "URL of the product page" },
-        "image_url": { "type" : "string", "description": "Image url of the product" }
+        "sku":        { "type" : "string", "description": "Sku of the product being viewed" },
+        "category":   { "type" : "string", "description": "Product category being viewed" },
+        "name":       { "type" : "string", "description": "Name of the product being viewed" },
+        "brand":      { "type" : "string", "description": "Brand associated with the product" },
+        "variant":    { "type" : "string", "description": "Variant of the product (e.g. Black)" },
+        "price":      { "type" : "number", "description": "Price ($) of the product being viewed" },
+        "quantity":   { "type" : "number", "description": "Quantity of a product" },
+        "coupon":     { "type" : "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
+        "position":   { "type" : "number", "description": "Position in the product list (ex. 3)" },
+        "url":        { "type" : "string", "description": "URL of the product page" },
+        "image_url":  { "type" : "string", "description": "Image url of the product" }
       },
       "additionalProperties": false,
       "required":["product_id","sku"],
@@ -337,6 +337,17 @@
     "vtDate": {
       "type":"string",
       "format":"date"
+    },
+    "vtUrl": {
+      "type":"string",
+      "oneOf": [
+        { "format": "url" },
+        { "format": "idn-url" }
+      ]
+    },
+    "vtMacAddress": {
+      "type":"string",
+      "pattern":"^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
     },
     "vtTime": {
       "type":"string",
@@ -366,7 +377,8 @@
     },
     "vtPhoneNumber": {
       "type": "string",
-      "pattern": ""
+      "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?$",
+      "description": ""
     },
     "vtHostname": {
       "type": "string",

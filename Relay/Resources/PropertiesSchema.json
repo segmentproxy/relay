@@ -4,38 +4,35 @@
   "title": "EventProperties",
   "type": "object",
   "properties": {
-    "org_phone":      {"$ref": "#/definitions/Phone", "description": ""},
-    "dst_phone":      {"$ref": "#/definitions/Phone", "description": ""},
-    "rsp_phone":      {"$ref": "#/definitions/Phone", "description": ""},
-    "email":          {"$ref": "#/definitions/Email", "description": ""},
-    "customer":       {"$ref": "#/definitions/Customer", "description": ""},
-    "notification":   {"$ref": "#/definitions/Notification", "description": ""},
-    "regarding":      {"$ref": "#/definitions/CrmEntity", "description": ""},
-    "crm_entity_id":  {"$ref": "#/definitions/CrmEntity", "description": ""},
-    "service":        {"$ref": "#/definitions/Service", "description": ""}
+    "org_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
+    "dst_phone":          {"$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
+    "rsp_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number responsible for the action being taken (the parent phone number)."},
+    "org_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmail", "description": "The email address responsible for starting the action (sent from)."},
+    "dst_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmail", "description": "The target email address."},
+    "customer":           {"$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
+    "notification":       {"$ref": "#/definitions/Correspondence", "description": "A notification being sent or being received."},
+    "regarding":          {"$ref": "#/definitions/CrmEntity", "description": "The CRM entity that the action is regarding."},
+    "service":            {"$ref": "#/definitions/Service", "description": "The Nova service that the action is regarding."},
+    "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
+    "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action ."},
+    "device":             {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to."}
+    "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."}
+    "order":              {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."}
   },
   "required": [],
   "additionalProperties": true,
+  "uniqueItems": true,
   "definitions": {
     "Phone": {
       "type": "object",
       "description": "",
       "properties": {
-        "nr":         { "type": "string", "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?", "description":"ITU E.123 and E.164 phone number format"},
-        "type":       { "type": "string" },
-        "carrier":    { "$ref": "#/definitions/Carrier", "description":"" },
-        "location":   { "$ref": "#/definitions/Location", "description":"" }
+        "nr":         { "$ref": "./SegmentSchema.json#/definitions/vtPhoneNumber", "description": "The phone number" },
+        "type":       { "type": "string", "description": "The type of phone number (landline or mobile)", "pattern": "^(mobile|landline)$" },
+        "carrier":    { "$ref": "#/definitions/Carrier", "description":"Information about the carrier responsible for the phone number and the home-region for the phone." },
+        "location":   { "$ref": "#/definitions/Location", "description":"The current location of the phone number (country or more details)" }
       },
       "required": ["nr"],
-      "uniqueItems": true
-    },
-    "Email": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "address":    { "$ref": "./SegmentSchema.json#/definitions/vtEmail" }
-      },
-      "required": ["address"],
       "uniqueItems": true
     },
     "Customer": {
@@ -43,25 +40,24 @@
       "description": "",
       "$comment": "Should this be traits from core properties",
       "properties": {
-        "id":         { "type": "string" },
-        "crm_id":     { "$ref": "#/definitions/CrmID", "description":"" },
-        "name":       { "type": "string", "minLength": 5 },
-        "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"" },
-        "address":    { "$ref": "#/definitions/Address", "description":"" },
-        "parent":     { "$ref": "#/definitions/Customer", "description":"" },
-        "crm_parent": { "$ref": "#/definitions/CrmEntity", "description":"" }
+        "id":         { "type": "string", "description": "The ID of the customer used natively in the origin system" },
+        "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The CRM ID of the customer" },
+        "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the customer" },
+        "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the customer using the segment.com schema for customer traits" },
+        "address":    { "$ref": "#/definitions/Address", "description":"The address of the customer ", "$comment": "Redundant with the Trait address  if we decide to use that solely." },
+        "parent_customer": { "$ref": "#/definitions/Customer", "description":"The parent customer of this customer. (if this is a division or child)" }
       },
       "required": ["id"],
       "uniqueItems": true
     },
-    "Notification": {
+    "Correspondence": {
       "type": "object",
       "description": "",
       "properties": {
-        "method":     { "type": "string", "pattern": "^(sms|email)$", "description": "Method used to send the notification" },
-        "type":       { "type": "string", "minLength": 10 },
-        "subject":    { "type": "string", "minLength": 1 },
-        "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html" }
+        "method":     { "type": "string", "pattern": "^(sms|email|phone|letter)$", "description": "Method used to send the correspondence." },
+        "type":       { "type": "string", "minLength": 10, "description": "Correspondence type if this is a standard correspondence ('other' if it is not)." },
+        "subject":    { "type": "string", "minLength": 1, "description": "The subject line/title for the correspondence." },
+        "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." }
       },
       "required": ["method", "type"],
       "uniqueItems": true
@@ -70,13 +66,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type": "string" },
-        "sku":        { "type": "string" },
-        "name":       { "type": "string", "minLength": 1 },
-        "type":       { "type": "string" },
-        "variant":    { "type": "string" },
-        "category":   { "type": "string", "description": "Product category being viewed" },
-        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1}
+        "id":         { "type": "string", "description": "The ID of the telcom service used by the origin system." },
+        "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
+        "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
+        "type":       { "type": "string", "description": "The core type of the telcom service ", "pattern": "^(phone|internet|tv)$" },
+        "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
+        "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
       "required": ["name","type","id"],
       "uniqueItems": true
@@ -95,9 +91,9 @@
         "quantity":   { "type": "number", "description": "Quantity of a product" },
         "coupon":     { "type": "string", "description": "Coupon code associated with a product (e.g MAY_DEALS_3)" },
         "position":   { "type": "number", "description": "Position in the product list (ex. 3)" },
-        "url":        { "type": "string", "description": "URL of the product page" },
-        "image_url":  { "type": "string", "description": "Image url of the product" },
-        "tags":       { "type": "array", "items": {"type":  "string"}}
+        "tags":       { "type": "array", "items": {"type":  "string"}},
+        "url":        { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "URL of the product page" },
+        "image_url":  { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "Image url of the product" }
       },
       "required": ["id","sku","name"],
       "uniqueItems": true
@@ -106,24 +102,27 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type": "string", "minLength": 1 },
-        "name":       { "type": "string" },
-        "handle":     { "type": "string" },
-        "location":   { "$ref": "#/definitions/Location", "description":"" }
+        "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
+        "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
+        "handle":         { "type": "string", "description": "the slug, handle or alternative ID for the carrier as used publicly" },
+        "details":        { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits" },
+        "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the carrier ot this subsidiary of the carrier" },
+        "parent_carrier": { "$ref": "#/definitions/Carrier", "description":"The parent carrier of this carrier. (if this is a division or child)" }
       },
-      "required": [],
+      "required": ["id","handle","name"],
       "minProperties": 2,
       "uniqueItems": true
     },
     "Equipment": {
       "type": "object",
-      "description": "",
+      "description": "Used to attach activity feed entries to equipment and to provide details regarding the equipment.",
       "properties": {
-        "mac":        { "type": "string" },
-        "type":       { "type": "string" },
-        "brand":      { "type": "string" },
-        "make":       { "type": "string" },
-        "model":      { "type": "string" }
+        "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the equipment." },
+        "type":       { "type": "string", "description": "The primary type of equipment", "pattern": "~(router|switch|mobile|phone|computer)$" },
+        "brand":      { "type": "string", "description": "The brand of the equipment manufacturer." },
+        "make":       { "type": "string", "description": "The make is the primary product name." },
+        "model":      { "type": "string", "description": "The model is the secondary product name (variant)." },
+        "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the equipment if stationary." }
       },
       "required": ["type"],
       "uniqueItems": true
@@ -143,7 +142,7 @@
       "description": "",
       "properties": {
         "id":         { "type": "string" },
-        "name":       { "type": "string" }
+        "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits" }
       },
       "required": [],
       "minProperties": 2,
@@ -267,7 +266,7 @@
     "CrmID": {
       "type": "string",
       "minLength": 32, 
-      "format":"uuid", 
+      "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$",
       "$comment": "guid"
     },
     "CrmEntity": {
