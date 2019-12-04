@@ -13,13 +13,12 @@
           "description": "Type of message, corresponding to the respective API method"
         },
         "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
-        "name":         { "type": "string","description": "Name of the page or the screen", "$comment": "Used for Page and Screen.", "minLength": 10 },
         "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-        "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+        "properties":   { "$ref": "#/definitions/TrackProperties", "description":"Event properties map" },
         "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }},
@@ -29,7 +28,7 @@
       "additionalProperties": false
     }, 
     {
-      "title": "SegmentPageScreenEvent",
+      "title": "SegmentPageEvent",
       "type": "object",
       "properties": {
         "type": {
@@ -37,13 +36,36 @@
           "pattern": "^(page|screen)$",
           "description": "Type of message, corresponding to the respective API method"
         },
-        "name":         { "type": "string","description": "Name of the page or the screen", "$comment": "Used for Page and Screen.", "minLength": 10 },
+        "name":         { "type": "string","description": "Name of the page\nFor example, most sites have a 'Signup' page that can be useful to tag, so you can see users as they move through your funnel.", "$comment": "Used for Page and Screen.", "minLength": 10 },
         "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-        "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+        "properties":   { "$ref": "#/definitions/PageProperties", "description":"Event properties map" },
+        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+      },
+      "required": ["type", "name", "timestamp","messageId", "context", "version"],
+      "additionalProperties": false
+    }, 
+    {
+      "title": "SegmentScreenEvent",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(screen)$",
+          "description": "Type of message, corresponding to the respective API method"
+        },
+        "name":         { "type": "string","description": "Name of the page\nFor example, most sites have a 'Signup' page that can be useful to tag, so you can see users as they move through your funnel.", "$comment": "Used for Page and Screen.", "minLength": 10 },
+        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+        "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
+        "properties":   { "$ref": "#/definitions/ScreenProperties", "description":"Event properties map" },
         "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
@@ -52,27 +74,65 @@
       "additionalProperties": false
     },
     {
-      "title": "Other Segment Event",
+      "title": "IdentifyEvent",
       "type": "object",
       "properties": {
         "type": {
           "type": "string",
-          "pattern": "^(identify|group|alias)$",
+          "pattern": "^(identify)$",
           "description": "Type of message, corresponding to the respective API method"
         },
-        "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
-        "name":         { "type": "string","description": "Name of the page or the screen", "$comment": "Used for Page and Screen.", "minLength": 10 },
         "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
-        "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
-        "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+        "traits":       { "$ref": "#/definitions/Traits",  "description":"Free-form dictionary of traits of the user, like `email` or `name`.\nSee the [Traits field docs](/docs/connections/spec/identify#traits) for a list of reserved trait names." },
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-        "properties":   { "$ref": "#/definitions/Properties", "description":"Event properties map" },
+        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
+        "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+      },
+      "required": ["type", "event", "timestamp","messageId", "context", "version"],
+      "additionalProperties": false
+    },
+    {
+      "title": "GroupEvent",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(group)$",
+          "description": "Type of message, corresponding to the respective API method"
+        },
+        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "groupId":      { "type": "string", "description": "A unique identifier for the group in your database.\nSee the [Group ID field docs](/docs/connections/spec/group#group-id) for more detail."},
+        "traits":       { "$ref": "#/definitions/GroupTraits",  "description":"Free-form dictionary of traits of the group, like `email` or `name`\nSee the [Traits field docs](/docs/connections/spec/group#traits) for a list of reserved trait names" },
+        "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
         "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
       "required": ["type", "event", "timestamp","messageId", "context", "version"],
+      "additionalProperties": false
+    },
+    {
+      "title": "AliasEvent",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^(alias)$",
+          "description": "Message sent to link two user IDs together as a single person/customer"
+        },
+        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
+        "previousId":   { "type": "string", "description": "Previous unique identifier for the user\nSee the [Previous ID field docs](/docs/connections/spec/alias#previous-id) for more detail."},
+        "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
+        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
+      },
+      "required": ["type","timestamp","userId", "previousId"],
       "additionalProperties": false
     }
   ],
@@ -258,6 +318,23 @@
       "minProperties":1,
       "uniqueItems": true
     },
+    "GroupTraits": {
+      "type":"object",
+      "description":"Dictionary of traits of a group.",
+      "properties": {
+        "name":         { "type": "string", "description": "Full name of a user <p> If you only pass a first and last name we’ll automatically fill in the full name for you.</p>"},
+        "industry":     { "type": "string"},
+        "employees":    { "type": "integer"},
+        "total billed": { "type": "number"},
+        "plan":         { "type": "string"},
+        "email":        { "$ref": "#/definitions/vtEmailAddress", "description": "Email address of a user"},
+        "phone":        { "$ref": "#/definitions/vtPhoneNumber",  "description": "" }
+      },
+      "additionalProperties": true,
+      "patternProperties":{"^[a-z_]{3,}$":{}},
+      "minProperties":1,
+      "uniqueItems": true
+    },
     "Page": {
       "type":"object",
       "description":"Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url <p>Automatically collected by Analytics.js.</p>",
@@ -296,11 +373,62 @@
       "minProperties":1,
       "uniqueItems": true
     },
-    "Properties": {
+    "TrackProperties": {
       "type":"object",
       "description":"Event properties",
       "properties": {
-        "products": {"type": "array", "items": {"$ref": "#/definitions/ProductLine"}}
+        "cart_id":          {"type": "string", "description": "Checkout transaction ID."},
+        "checkout_id":      {"type": "string", "description": "Checkout transaction ID."},
+        "step":             {"type": "number", "description": "Checkout transaction ID."},
+        "order_id":         {"type": "string", "description": "Number representing a step in the checkout process."},
+        "payment_method":   {"type": "string", "description": "String representing the payment method chosen."},
+        "shipping_method":  {"type": "string", "description": "String representing the shipping the method chosen."},
+        "affiliation":      {"type": "string", "description": "Store or affiliation from which this transaction occurred (e.g. Google Store)."},
+        "value":            {"type": "number", "description": "Revenue ($) with discounts and coupons added in. For better flexibility and total control over tracking, we let you decide how to calculate how coupons and discounts are applied."},
+        "revenue":          {"type": "number", "description": "Revenue ($) associated with the transaction (excluding shipping and tax)."},
+        "shipping":         {"type": "number", "description": "Shipping cost associated with the transaction."},
+        "tax":              {"type": "number", "description": "Total tax associated with the transaction."},
+        "discount":         {"type": "number", "description": "Total discount associated with the transaction."},
+        "coupon":           {"type": "string", "description": "Transaction coupon redeemed with the transaction."},
+        "currency":         {"type": "string", "description": "Currency code associated with the transaction.", "maxLength": 3, "minLength": 2},
+        "products":         {"type": "array",  "items": {"$ref": "#/definitions/ProductLine"}},
+        "wishlist_id":      {"type": "string", "description": "Wishlist ID to which the product was added to."},
+        "wishlist_name":    {"type": "string", "description": "Wishlist name to which the product was added to."},
+        "share_via":        {"type": "string", "description": "Method of sharing."},
+        "share_message":    {"type": "string", "description": "Message that the sender sent."},
+        "recipient":        {"type": "string", "description": "Review body."},
+        "review_body":      {"type": "string", "description": "Message that the sender sent."},
+        "rating":           {"type": "string", "description": "Review rating."}
+      },
+      "additionalProperties": true,
+      "patternProperties":{"^[a-z_]{3,}$":{}},
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "PageProperties": {
+      "type":"object",
+      "description":"Event properties",
+      "properties": {
+        "products":   {"type": "array", "items": {"$ref": "#/definitions/ProductLine"}},
+        "name":       {"type": "string", "description": "Name of the page <p> This is reserved for future use.</p>"},
+        "path":       {"type": "string", "description": "Path portion of the URL of the page <p> Equivalent to canonical path which defaults to location.pathname from the DOM API.</p>"},
+        "referer":    {"type": "string", "description": "Full URL of the previous page <p> Equivalent to document.referrer from the DOM API.</p>"},
+        "search":     {"type": "string", "description": "Query string portion of the URL of the page <p> Equivalent to location.search from the DOM API.</p>"},
+        "url":        {"type": "string", "description": "Full URL of the page <p> First we look for the canonical url. If the canonical url is not provided, we use location.href from the DOM API.</p>"},
+        "keywords":   {"type": "array", "items": {"type": "string"}, "description": "A list/array of kewords describing the content of the page. <p> The keywords would most likely be the same as, or similar to, the keywords you would find in an html meta tag for SEO purposes. This property is mainly used by content publishers that rely heavily on pageview tracking. This is not automatically collected.</p>"},
+        "title":      {"type": "string", "description": "Title of the page <p> Equivalent to document.title from the DOM API.</p>"}
+      },
+      "additionalProperties": true,
+      "patternProperties":{"^[a-z_]{3,}$":{}},
+      "minProperties":1,
+      "uniqueItems": true
+    },
+    "ScreenProperties": {
+      "type":"object",
+      "description":"Event properties",
+      "properties": {
+        "products":   {"type": "array", "items": {"$ref": "#/definitions/ProductLine"}},
+        "name":       {"type": "string", "description": "Name of the screen <p>This is reserved for future use.</p>"}
       },
       "additionalProperties": true,
       "patternProperties":{"^[a-z_]{3,}$":{}},
