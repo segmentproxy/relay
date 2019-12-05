@@ -217,14 +217,26 @@
         "method": {"type": "string", "pattern": "^(cash|transfer|card|other)$"},
         "org_account": {"type": "string"},
         "dst_account": {"type": "string"},
-        "payment_card": {"type": "string"},
-        "amount": {"type": "string"},
-        "currency": {"type": "string"},
-        "components": {"type": "array", "items": {"type": "number"}}
+        "payment_card": { "$ref": "#/definitions/PaymentCard" },
+        "amount": {"type": "number", "description": "The amount paid"},
+        "currency": {"type": "string", "pattern": "^[A-Z]{2,3}$", "description": "The acronym for the currency that the amount is made in", "default": "ISK"},
+        "components": {"type": "array", "items": {"type": "number"}, "description": "Amount components"}
       },
       "required": ["amount","currency","type","method"],
       "minProperties": 5,
       "uniqueItems": true
+    },
+    "PaymentCard": {
+      "type": "object",
+      "description": "Information regarding a payment card",
+      "properties": {
+        "type": {"type": "string", "pattern": "^(credit|debit|other)$"},
+        "class": {"type": "string", "pattern": "^(normal|silver|gold|platinum)$"},
+        "brand": {"type": "string"},
+        "cdn": {"type": "string", "pattern": "^$", "description": "Card number"},
+        "cde": {"type": "string", "pattern": "^$", "description": "Card expires"}
+      },
+      "required": ["cdn","type"]
     },
     "Content": {
       "type": "object",
