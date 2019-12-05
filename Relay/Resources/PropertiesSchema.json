@@ -24,9 +24,9 @@
     "device":             {"$ref": "#/definitions/Device", "description": "The device/equipment that this action responds to."},
     "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
-    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
     "operator":           {"$ref": "#/definitions/Carrier", "description": "The carrier that this event message is sent for (Identify virtual operator under Nova)."},
-    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"}
+    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
+    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
   },
   "required": [],
   "additionalProperties": true,
@@ -55,7 +55,7 @@
         "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the customer" },
         "spouse_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the spouse" },
         "family_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the parent if this customer is a minor" },
-        "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the customer using the segment.com schema for customer traits" },
+        "traits":     { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the customer using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "address":    { "$ref": "#/definitions/Address", "description":"The address of the customer ", "$comment": "Redundant with the Trait address  if we decide to use that solely." },
         "parent_customer": { "$ref": "#/definitions/Customer", "description":"The parent customer of this customer. (if this is a division or child)" }
       },
@@ -83,10 +83,10 @@
       "description": "Used to define a telecommunication service referred to by Business Events.",
       "properties": {
         "id":         { "type": "string", "description": "The ID of the telcom service used by the origin system." },
-        "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
+        "type":       { "type": "string", "description": "The core type of the telcom service ", "pattern": "^(phone|internet|tv|other)$" },
         "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
-        "type":       { "type": "string", "description": "The core type of the telcom service ", "pattern": "^(phone|internet|tv)$" },
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
+        "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
         "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
@@ -120,7 +120,7 @@
         "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
         "handle":         { "type": "string", "description": "the slug/handle or alternative ID for the carrier as used publicly/internationally" },
         "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
-        "details":        { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits" },
+        "traits":         { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the carrier ot this subsidiary of the carrier" },
         "parent_carrier": { "$ref": "#/definitions/Carrier", "description":"The parent carrier of this carrier. (if this is a division or child)" }
       },
@@ -159,7 +159,7 @@
       "description": "",
       "properties": {
         "id":         { "type": "string" },
-        "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits" }
+        "traits":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" }
       },
       "required": [],
       "minProperties": 2,
@@ -297,6 +297,12 @@
       "additionalProperties": true,
       "minProperties": 2,
       "uniqueItems": true
+    },
+    "ABTest": {
+      "experiment_id":    { "type": "string" },
+      "experiment_name":  { "type": "string" },
+      "variation_id":     { "type": "string" },
+      "variation_name":   { "type": "string" }
     },
     "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"},
     "CrmID": {

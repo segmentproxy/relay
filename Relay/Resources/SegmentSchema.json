@@ -33,7 +33,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "pattern": "^(page|screen)$",
+          "pattern": "^(page)$",
           "description": "Type of message, corresponding to the respective API method"
         },
         "name":         { "type": "string","description": "Name of the page\nFor example, most sites have a 'Signup' page that can be useful to tag, so you can see users as they move through your funnel.", "$comment": "Used for Page and Screen.", "minLength": 10 },
@@ -91,7 +91,7 @@
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
-      "required": ["type", "event", "timestamp","messageId", "context", "version"],
+      "required": ["type", "timestamp", "messageId", "context", "version"],
       "additionalProperties": false
     },
     {
@@ -112,7 +112,7 @@
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
-      "required": ["type", "event", "timestamp","messageId", "context", "version"],
+      "required": ["type", "timestamp","messageId", "context", "version"],
       "additionalProperties": false
     },
     {
