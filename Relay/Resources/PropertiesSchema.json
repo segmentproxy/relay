@@ -248,10 +248,10 @@
       "description": "Information regarding a payment card",
       "properties": {
         "type": {"type": "string", "pattern": "^(credit|debit|other)$"},
+        "pcn": {"type": "string", "pattern": "^$", "description": "Card number"},
+        "pce": {"type": "string", "pattern": "^$", "description": "Card expires"},
         "class": {"type": "string", "pattern": "^(normal|silver|gold|platinum)$"},
-        "brand": {"type": "string"},
-        "cdn": {"type": "string", "pattern": "^$", "description": "Card number"},
-        "cde": {"type": "string", "pattern": "^$", "description": "Card expires"}
+        "issuer": {"type": "object"}
       },
       "required": ["cdn","type"]
     },
@@ -324,20 +324,6 @@
       },
       "required": ["id","issued_date"],
       "additionalProperties": true,
-      "minProperties": 2,
-      "uniqueItems": true
-    },
-    "PaymentCard": {
-      "type": "object",
-      "description": "Information regarding a payment card that ",
-      "properties": {
-        "pcn":        { "$ref": "#/definitions/CrmID", "description":"Payment Card Number" },
-        "pcno":       { "$ref": "#/definitions/CrmID", "description":"Obfuscated Payment Card Number" },
-        "issuer":     { "type": "object" },
-        "pce":        { "type": "string", "description": "Payment card expires"}
-      },
-      "additionalProperties": true,
-      "required": ["id","type"],
       "minProperties": 2,
       "uniqueItems": true
     },
