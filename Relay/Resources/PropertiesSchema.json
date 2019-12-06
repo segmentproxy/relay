@@ -24,9 +24,9 @@
     "device":             {"$ref": "#/definitions/Device", "description": "The device/equipment that this action responds to."},
     "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
-    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
     "operator":           {"$ref": "#/definitions/Carrier", "description": "The carrier that this event message is sent for (Identify virtual operator under Nova)."},
-    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"}
+    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
+    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
   },
   "required": [],
   "additionalProperties": true,
@@ -55,7 +55,7 @@
         "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the customer" },
         "spouse_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the spouse" },
         "family_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the parent if this customer is a minor" },
-        "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the customer using the segment.com schema for customer traits" },
+        "traits":     { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the customer using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "address":    { "$ref": "#/definitions/Address", "description":"The address of the customer ", "$comment": "Redundant with the Trait address  if we decide to use that solely." },
         "parent_customer": { "$ref": "#/definitions/Customer", "description":"The parent customer of this customer. (if this is a division or child)" }
       },
@@ -124,7 +124,7 @@
         "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The CRM ID of the carrier" },
         "handle":         { "type": "string", "description": "the slug/handle or alternative ID for the carrier as used publicly/internationally" },
         "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
-        "details":        { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits" },
+        "traits":         { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the carrier ot this subsidiary of the carrier" },
         "parent_carrier": { "$ref": "#/definitions/Carrier", "description":"The parent carrier of this carrier. (if this is a division or child)" }
       },
@@ -167,7 +167,7 @@
         "id":         { "type": "string", "description": "Internal ID of the employee"},
         "user_id":    { "type": "string", "description": "the login user-id of the mepployee" },
         "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The CRM ID of the employee" },
-        "details":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits" }
+        "traits":    { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" }
       },
       "required": [],
       "minProperties": 2,
@@ -242,6 +242,18 @@
       },
       "minProperties": 5,
       "uniqueItems": true
+    },
+    "PaymentCard": {
+      "type": "object",
+      "description": "Information regarding a payment card",
+      "properties": {
+        "type": {"type": "string", "pattern": "^(credit|debit|other)$"},
+        "class": {"type": "string", "pattern": "^(normal|silver|gold|platinum)$"},
+        "brand": {"type": "string"},
+        "cdn": {"type": "string", "pattern": "^$", "description": "Card number"},
+        "cde": {"type": "string", "pattern": "^$", "description": "Card expires"}
+      },
+      "required": ["cdn","type"]
     },
     "Content": {
       "type": "object",
@@ -328,6 +340,12 @@
       "required": ["id","type"],
       "minProperties": 2,
       "uniqueItems": true
+    },
+    "ABTest": {
+      "experiment_id":    { "type": "string" },
+      "experiment_name":  { "type": "string" },
+      "variation_id":     { "type": "string" },
+      "variation_name":   { "type": "string" }
     },
     "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"},
     "CrmID": {
