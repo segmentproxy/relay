@@ -25,8 +25,15 @@
     "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
     "operator":           {"$ref": "#/definitions/Carrier", "description": "The carrier that this event message is sent for (Identify virtual operator under Nova)."},
-    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
-    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
+    "rate_plan":          {"$ref": "#/definitions/RatePlan", "description": "Rate plan information"},
+    "rate":               {"$ref": "#/definitions/Rate", "description": "Rate information"},
+    "usage":              {"$ref": "#/definitions/Usage", "description": "Usage summary record"},
+    "document":           {"$ref": "#/definitions/Document", "description": "Document associated with the action reported by this event"},
+    "old_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list old values when reporting values being changed"},
+    "new_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list new values when reporting values being changed"},
+    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
+    "crm_id":             {"$ref": "#/definitions/CrmID", "description":"The CRM ID of the event if it also exists in CEM" },
+    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"}
   },
   "required": [],
   "additionalProperties": true,
@@ -67,12 +74,13 @@
       "type": "object",
       "description": "Generic content container for any type of correspondence",
       "properties": {
-        "method":     { "type": "string", "pattern": "^(sms|email|phone|letter)$", "description": "Method used to send the correspondence." },
+        "method":     { "type": "string", "pattern": "^(sms|email|phone|letter|voice)$", "description": "Method used to send the correspondence." },
         "type":       { "type": "string", "minLength": 10, "description": "Correspondence type if this is a standard correspondence ('other' if it is not)." },
         "subject":    { "type": "string", "minLength": 1, "description": "The subject line/title for the correspondence." },
         "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." },
         "media_type": { "type": "string", "description": "Used if the payload content is not text/html" },
-        "filename":   { "type": "string", "description": "Used if the content needs to be downloadable as a specific file" }
+        "filename":   { "type": "string", "description": "Used if the content needs to be downloadable as a specific file" },
+        "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The CRM ID of the correspondence" }
       },
       "additionalProperties": true,
       "required": ["method", "type"],
@@ -130,6 +138,17 @@
       },
       "required": ["id","handle","name"],
       "minProperties": 2,
+      "additionalProperties": true,
+      "uniqueItems": true
+    },
+    "Usage": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "units": { "type": "string", "pattern": "^(kbp|)$" },
+        "volume": { "type": "number" }
+      },
+      "required": ["units", "volume"],
       "additionalProperties": true,
       "uniqueItems": true
     },
@@ -288,8 +307,21 @@
       "type": "object",
       "description": "",
       "properties": {
-        "id":         { "type": "string", "description": "Internal ID f the rate plan" },
-        "name":       { "type": "string", "description": "Name of the rate plan" }
+        "id":         { "type": "string", "description": "Internal ID f the rate plan." },
+        "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
+        "name":       { "type": "string", "description": "Name of the rate plan." }
+      },
+      "required": ["id","name"],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
+    "Rate": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "id":         { "type": "string", "description": "Internal ID f the rate plan." },
+        "crm_id":     { "$ref": "#/definitions/CrmID", "description":"The Nova specific - CRM ID - used to identify the rate." },
+        "name":       { "type": "string", "description": "Name of the rate plan." }
       },
       "required": ["id","name"],
       "minProperties": 2,

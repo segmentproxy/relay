@@ -537,6 +537,21 @@
         { "format": "idn-email" }
       ]
     },
+    "vtValueMap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {"type": "string"},
+          "s_value": {"type": "string"},
+          "i_value": {"type": "integer"},
+          "n_value": {"type": "number"},
+          "b_value": {"type": "boolean"}
+        },
+        "required": ["field"],
+        "maxItems": 2
+      }
+    },
     "vtRegExp": {
       "type": "string",
       "format": "regex"
