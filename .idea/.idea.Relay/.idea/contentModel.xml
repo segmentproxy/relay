@@ -23,6 +23,7 @@
         <e p="Relay.csproj" t="IncludeRecursive" />
         <e p="Resources" t="Include">
           <e p="NovaEventTypes.json" t="Include" />
+          <e p="ObservationsSchema.json" t="Include" />
           <e p="PropertiesSchema.json" t="Include" />
           <e p="SegmentSchema.json" t="Include" />
           <e p="TestEvents" t="Include">

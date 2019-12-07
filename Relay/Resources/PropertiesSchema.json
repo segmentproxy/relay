@@ -109,6 +109,7 @@
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
         "brand":      { "type": "string", "description": "Brand associated with the service" },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
+        "active":     { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" },
         "tags":       { "type": "array", "items": {"type":  "string", "minLength": 2, "description": "A tag describing the service" }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
       "additionalProperties": true,

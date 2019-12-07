@@ -1,7 +1,7 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://segmentproxy.com/Resources/SegmentSchema.json",
-  "title": "SegmentEvent",
+  "title": "Observations",
   "oneOf": [ 
     {
       "title": "SegmentTrackEvent",
@@ -23,7 +23,6 @@
         "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }},
-        "involves":     { "type": "array", "items": { "type": "string" }, "description": "Additional field listing all entities involved in this event (set by the "},
         "$schema":      { "type": "string", "$comment": "Included so json files can be edited with schema support"}
       },
       "required": ["type", "event", "timestamp","messageId", "context", "version"],
@@ -482,14 +481,6 @@
         { "format": "url" },
         { "format": "idn-url" }
       ]
-    },
-    "vtPeriod": {
-      "type":"object",
-      "description": "Used to record a period where something is active or true",
-      "properties": {
-        "from":       { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" },
-        "until":      { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" }
-      }
     },
     "vtMacAddress": {
       "type":"string",
