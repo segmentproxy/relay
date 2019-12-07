@@ -24,8 +24,9 @@
     "dst_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmailAddress", "description": "The target email address."},
 
     "ab_test":            {"$ref": "#/definitions/ABTest", "description": "AB Test information if a AB test is in progress."},
+    "address":            {"$ref": "#/definitions/Address", "description": ""},
     "correspondence":     {"$ref": "#/definitions/Correspondence", "description": "A correspondence/notification being sent or being received."},
-    "device":             {"$ref": "#/definitions/Device", "description": "The device/equipment that this action responds to."},
+    "equipment":          {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to.", "$comment": "Alternative to the Device type in segment spec that is also used for reporting devices/equipment. Use that for the device sending the event whenever possible."},
     "document":           {"$ref": "#/definitions/Document", "description": "Document associated with the action reported by this event"},
     "issue":              {"$ref": "#/definitions/Issue", "description": "The issue involved in the action."},
     "operator":           {"$ref": "#/definitions/Partner", "description": "The operator that this event message is sent for (Identify virtual operator under Nova)."},
@@ -166,18 +167,18 @@
       "additionalProperties": true,
       "uniqueItems": true
     },
-    "Device": {
+    "Equipment": {
       "type": "object",
-      "description": "Used to attach activity feed entries to device and to provide details regarding the device.",
+      "description": "Used to attach activity feed entries to equipment/device and to provide details regarding the equipment/device.",
       "properties": {
-        "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the device." },
-        "ip":         { "$ref": "./SegmentSchema.json#/definitions/vtIP", "description": "The current IP address of the device." },
-        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the device" },
-        "type":       { "type": "string", "description": "The primary type of device", "pattern": "~(router|switch|mobile|phone|computer)$" },
-        "brand":      { "type": "string", "description": "The brand of the device manufacturer." },
+        "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the equipment." },
+        "ip":         { "$ref": "./SegmentSchema.json#/definitions/vtIP", "description": "The current IP address of the equipment." },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the equipment" },
+        "type":       { "type": "string", "description": "The primary type of equipment", "pattern": "~(router|switch|mobile|phone|computer)$" },
+        "brand":      { "type": "string", "description": "The brand of the equipment manufacturer." },
         "make":       { "type": "string", "description": "The make is the primary product name." },
         "model":      { "type": "string", "description": "The model is the secondary product name (variant)." },
-        "location":   { "$ref": "#/definitions/Location", "description":"The primary location of the device if stationary." }
+        "location":   { "$ref": "#/definitions/Location", "description":"The primary location of the equipment if stationary." }
       },
       "additionalProperties": true,
       "required": ["type"],
@@ -353,11 +354,11 @@
       "type": "object",
       "description": "Contains human readable information regarding a address of a building/place. The `location` structure is used for codes and coordinates of the address. ",
       "properties": {
-        "street":       { "type" : "string", "description": "Name of streat and number of building" },
+        "street":       { "type" : "string", "description": "Name of street and number of building" },
         "street2":      { "type" : "string", "description": "Location within building" },
         "city":         { "type" : "string", "description": "Name ot the city" },
         "country":      { "type" : "string", "description": "Name of the country" },
-        "postal_code":  { "type" : "string", "description": "Postal code that the building/streat is in " },
+        "postal_code":  { "type" : "string", "description": "Postal code that the building/street is in " },
         "po_box":       { "type" : "string", "description": "PO box if the location is a post office delivery box" },
         "state":        { "type" : "string", "description": "Name of the state that the city belongs to" },
         "location":     { "$ref": "#/definitions/Location", "description":"Code and Geo location for the location of the address" }
