@@ -530,13 +530,6 @@
         { "format": "iri-reference" }
       ]
     },
-    "vtEmail": {
-      "type": "string",
-      "oneOf": [
-        { "format": "email" },
-        { "format": "idn-email" }
-      ]
-    },
     "vtValueMap": {
       "type": "array",
       "items": {
@@ -562,18 +555,14 @@
       "mazLength": 8,
       "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$"
     },
-    
     "vtCountryCode": {
       "type": "string",
-      "pattern": "^[a-z_]{2,3}$"
+      "pattern": "^[A-Z_]{2,3}$"
     },
     "vtGeo": {
       "type": "string",
-      "pattern": "^[a-z_]{3,}$"
-    },
-    "vtReqString": {
-      "type":"string",
-      "pattern":"^(.){1,}$"
+      "description": "Geo string contains two or three numbers Latitude, Longitude and - optionally - Altitude",
+      "pattern": "^(\\d*){2,3}$"
     }
   }
 }
