@@ -24,10 +24,9 @@
     "dst_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmailAddress", "description": "The target email address."},
 
     "ab_test":            {"$ref": "#/definitions/ABTest", "description": "AB Test information if a AB test is in progress."},
-    "crm_id":             {"$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the event if it also exists in CEM" },
+    "correspondence":     {"$ref": "#/definitions/Correspondence", "description": "A correspondence/notification being sent or being received."},
     "device":             {"$ref": "#/definitions/Device", "description": "The device/equipment that this action responds to."},
     "document":           {"$ref": "#/definitions/Document", "description": "Document associated with the action reported by this event"},
-    "notification":       {"$ref": "#/definitions/Correspondence", "description": "A notification being sent or being received."},
     "issue":              {"$ref": "#/definitions/Issue", "description": "The issue involved in the action."},
     "operator":           {"$ref": "#/definitions/Partner", "description": "The operator that this event message is sent for (Identify virtual operator under Nova)."},
     "provider":           {"$ref": "#/definitions/Partner", "description": "The partner that provides the content, product or service also referenced by the same event."},
@@ -40,6 +39,8 @@
     "usage":              {"$ref": "#/definitions/Usage", "description": "Usage summary record"},
     "old_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list old values when reporting values being changed"},
     "new_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list new values when reporting values being changed"},
+
+    "crm_id":             {"$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the event if it also exists in CEM" },
     "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
     
     "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
@@ -67,7 +68,7 @@
       "$comment": "Subsystems are only responsible to provide the available 'handle' for a customer and need to rely on de-duplication and correct resolution elsewhere",
       "properties": {
         "id":         { "type": "string", "description": "The ID of the customer used natively in the origin system" },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the customer" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the customer" },
         "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the customer" },
         "spouse_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the spouse" },
         "family_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the parent if this customer is a minor" },
@@ -89,7 +90,7 @@
         "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." },
         "media_type": { "type": "string", "description": "Used if the payload content is not text/html" },
         "filename":   { "type": "string", "description": "Used if the content needs to be downloadable as a specific file" },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the correspondence" }
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the correspondence" }
       },
       "additionalProperties": true,
       "required": ["method", "type"],
@@ -99,15 +100,15 @@
       "type": "object",
       "description": "Used to define a telecommunication service referred to by Business Events.",
       "properties": {
-        "id":         { "type": "string", "description": "The ID of the telcom service used by the origin system." },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the service" },
+        "id":         { "type": "string", "description": "The ID of the telecomm service used by the origin system." },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service" },
         "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
         "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
-        "type":       { "type": "string", "description": "The core type of the telcom service ", "pattern": "^(phone|internet|tv|other)$" },
+        "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(phone|internet|tv|other)$" },
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
         "brand":      { "type": "string", "description": "Brand associated with the service" },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
-        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Various tags used to classify the service"}
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 2, "description": "A tag describing the service" }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
       "additionalProperties": true,
       "required": ["name","type","id"],
@@ -115,17 +116,17 @@
     },
     "Product": {
       "type": "object",
-      "description": "Product definition used for other products than teleco services. (Phones, Routers etc.)",
+      "description": "Product definition used for other products than telecomm services. (Phones, Routers etc.)",
       "properties": {
         "product_id": { "type": "string", "description": "Product id displayed on the list", "minLength": 1 },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the product" },
-        "sku":        { "type": "string", "description": "Sku of the product being viewed" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the product" },
+        "sku":        { "type": "string", "description": "Sku of the product being viewed", "minLength": 1 },
         "category":   { "type": "string", "description": "Product category being viewed" },
-        "name":       { "type": "string", "description": "Name of the product being viewed" },
-        "brand":      { "type": "string", "description": "Brand associated with the product" },
-        "variant":    { "type": "string", "description": "Variant of the product (e.g. Black)" },
-        "price":      { "type": "number", "description": "Price ($) of the product being viewed" },
-        "tags":       { "type": "array", "items": {"type":  "string"}},
+        "name":       { "type": "string", "description": "Name of the product being viewed","minLength": 1 },
+        "brand":      { "type": "string", "description": "Brand associated with the product","minLength": 1 },
+        "variant":    { "type": "string", "description": "Variant of the product (e.g. Black)","minLength": 1 },
+        "price":      { "type": "number", "description": "Price ($) of the product being viewed/acted on" },
+        "tags":       { "type": "array", "items": {"type":  "string", "description": "A tag describing the product"}, "minItems": 1,"description": "Various tags used to classify the product"},
         "url":        { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "URL of the product page" },
         "image_url":  { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "Image url of the product" }
       },
@@ -138,7 +139,7 @@
       "description": "Partner definition with heretical structure and location information",
       "properties": {
         "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
-        "crm_id":         { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the carrier" },
+        "crm_id":         { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the carrier" },
         "handle":         { "type": "string", "description": "the slug/handle or alternative ID for the carrier as used publicly/internationally" },
         "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
         "traits":         { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
@@ -152,10 +153,14 @@
     },
     "Usage": {
       "type": "object",
-      "description": "",
+      "description": "Used when reporting some sort of usage of a telecommunication service.",
+      "$comment": "Used with rate plan and rates",
       "properties": {
-        "units": { "type": "string", "pattern": "^(kbp|)$" },
-        "volume": { "type": "number" }
+        "units":        { "type": "string", "pattern": "^(kbp|)$" },
+        "usage_starts": { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" },
+        "usage_end":    { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" },
+        "duration":     { "$ref": "./SegmentSchema.json#/definitions/vtDuration" },
+        "use":          { "type": "number" }
       },
       "required": ["units", "volume"],
       "additionalProperties": true,
@@ -166,7 +171,8 @@
       "description": "Used to attach activity feed entries to device and to provide details regarding the device.",
       "properties": {
         "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the device." },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the device" },
+        "ip":         { "$ref": "./SegmentSchema.json#/definitions/vtIP", "description": "The current IP address of the device." },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the device" },
         "type":       { "type": "string", "description": "The primary type of device", "pattern": "~(router|switch|mobile|phone|computer)$" },
         "brand":      { "type": "string", "description": "The brand of the device manufacturer." },
         "make":       { "type": "string", "description": "The make is the primary product name." },
@@ -184,6 +190,7 @@
         "id":         { "type": "string", "description": "ID/Handle for the target group"},
         "name":       { "type": "string", "description": "Name of target group"}
       },
+      "additionalProperties": true,
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -194,7 +201,7 @@
       "properties": {
         "id":         { "type": "string", "description": "Internal ID of the employee"},
         "user_id":    { "type": "string", "description": "the login user-id of the mepployee" },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The CRM ID of the employee" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the employee" },
         "traits":     { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "location":   { "$ref": "#/definitions/Location", "description":"The current location of the phone number (country or more details)" }
       },
@@ -212,6 +219,7 @@
         "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC", "description": "A has code for the country, state and region (or any part there of)" },
         "geo":          { "$ref": "./SegmentSchema.json#/definitions/vtGeo", "description": "Latitute, Longitute for the location"}
       },
+      "additionalProperties": true,
       "$comment": "The initial two letters for the HASC are the same as the 2 letter ISO country code",
       "required": ["hasc","country_code"],
       "minProperties": 2,
@@ -222,13 +230,14 @@
       "description": "Defines Support and service issues",
       "properties": {
         "id":         { "type": "string", "description": "The internal ID of the issue or the ID used by a SAAS system" },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"The Nova specific - CRM ID - used to identify the issue" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the issue" },
         "name":       { "type": "string", "description": "Title or main subject for the issue" },
         "type":       { "type": "string", "description": "Type of issue" },
         "category":   { "type": "string", "description": "Issue Category" },
         "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
         "description": { "type": "string", "description": "The main body of text used when defining the issue", "contentEncoding": "base64", "contentMediaType": "text/html" }
       },
+      "additionalProperties": true,
       "required": ["id","type"],
       "minProperties": 2,
       "uniqueItems": true
@@ -238,12 +247,13 @@
       "description": "Information regarding a document that is stored as an attachment",
       "properties": {
         "id":         { "type": "string", "description": "The internal ID for the document as issued by the document management system." },
-        "crm_id":     { "$ref": "#/definitions/vtCrmID", "description":"A Nova specific - CRM ID - used to identify the document." },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"A Nova specific - CRM ID - used to identify the document." },
         "name":       { "type": "string", "description": "The name or main title for the document." },
         "summary":    { "type": "string", "description": "A short summary for the document", "contentEncoding": "base64", "contentMediaType": "text/html" },
         "category":   { "type": "string", "description":  "The main category that the document belongs to"},
         "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the document" }
       },
+      "additionalProperties": true,
       "required": ["id", "name"],
       "minProperties": 2,
       "uniqueItems": true 
@@ -262,6 +272,7 @@
         "currency":       {"type": "string", "description": "The currency used for the transaction", "default": "ISK"},
         "components":     {"type": "array", "items": {"type": "number"}, "description": "If the amount needs to be broken down into components then this structure is used to list them and the component type."}
       },
+      "additionalProperties": true,
       "required": ["amount","currency","method"],
       "if": {
         "properties": { "payment_card": {"minLength": 1}}
@@ -292,6 +303,7 @@
       "properties": {
         
       },
+      "additionalProperties": true,
       "required": [],
       "minProperties": 2,
       "uniqueItems": true
@@ -305,6 +317,7 @@
         "customer":         { "$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
         "ordered_by":       { "type": "string", "description": "Name of the employee of the customer making the order" }
       },
+      "additionalProperties": true,
       "required": ["id"],
       "minProperties": 2,
       "uniqueItems": true
@@ -314,10 +327,11 @@
       "description": "A rate plan includes multiple rates. A single rate-plan is typically used for all service use by a single customer.",
       "properties": {
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
-        "crm_id":       { "$ref": "#/definitions/vtCrmID", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
+        "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
         "name":         { "type": "string", "description": "Name of the rate plan." },
         "rates":        { "type": "array", "items": {"$ref": "#/definitions/Rate"},"description": "List of rates belonging to the rate plan.", "$comment": "Not used for generic events" }
       },
+      "additionalProperties": true,
       "required": ["id","name"],
       "minProperties": 2,
       "uniqueItems": true
@@ -327,9 +341,10 @@
       "description": "Single Rate-type used when calculating usage price.",
       "properties": {
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
-        "crm_id":       { "$ref": "#/definitions/vtCrmID", "description":"The Nova specific - CRM ID - used to identify the rate." },
+        "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate." },
         "name":         { "type": "string", "description": "Name of the rate plan." }
       },
+      "additionalProperties": true,
       "required": ["id","name"],
       "minProperties": 2,
       "uniqueItems": true
@@ -361,8 +376,8 @@
         "payment_due_date": { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "" },
         "due_date":         { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "" }
       },
-      "required": ["id","issued_date"],
       "additionalProperties": true,
+      "required": ["id","issued_date"],
       "minProperties": 2,
       "uniqueItems": true
     },
@@ -374,14 +389,16 @@
         "experiment_name":  { "type": "string" },
         "variation_id":     { "type": "string" },
         "variation_name":   { "type": "string" }
-      }
+      },
+      "additionalProperties": true,
+      "required": ["experiment_id","variation_id"]
     },
     "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"},
     "CrmEntity": {
       "type": "object",
       "description": "Used to define the CRM entity associated with the parent message entity.",
       "properties": {
-        "id":         { "$ref": "#/definitions/vtCrmID", "description":"" },
+        "id":         { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"" },
         "type":       { "type": "string", "description": "Regarding: Service, Contact etc."},
         "label":      { "type": "string", "description": "Readable name/label for the CRM entity"}
       },

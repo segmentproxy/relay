@@ -18,15 +18,16 @@
     "dst_phone": {
       "nr":"+354-8964896"
     },
-    "notification": {
-      "name":"Inneign er að klárast", 
+    "cecorrespondence": {
+      "method": "sms",
+      "type":"Inneign er að klárast", 
       "payload":"base64-enc",
     },
     "service": {
       "name": "<fjarskiptaþjónusta>"
     }
   },
-  "userId": "°<some-valid-customer-id>",
+  "userId": "<some-valid-customer-id>",
   "messageId":"<deterministic message id from signature>",
   "version": "1"
 }

@@ -460,13 +460,13 @@
       "type":"string",
       "format":"date-time"
     },
-    "vtDuration": {
-      "type":"string",
-      "format":"duration"
-    },
     "vtDate": {
       "type":"string",
       "format":"date"
+    },
+    "vtTime": {
+      "type":"string",
+      "format":"time"
     },
     "vtUrl": {
       "type":"string",
@@ -478,10 +478,6 @@
     "vtMacAddress": {
       "type":"string",
       "pattern":"^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-    },
-    "vtTime": {
-      "type":"string",
-      "format":"time"
     },
     "vtIP": {
       "type": "string",
@@ -519,7 +515,13 @@
     },
     "vtUUID": {
       "type": "string",
+      "$comment": "Use  format:duration once 09 is released.",
       "format": "uuid"
+    },
+    "vtGUID": {
+      "type": "string",
+      "minLength": 32,
+      "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
     },
     "vtResourceIdentifier": {
       "type": "string",
@@ -554,6 +556,12 @@
       "minLength": 2, 
       "mazLength": 8,
       "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$"
+    },
+    "vtDuration": {
+      "type": "string",
+      "description": "Used to store ISO 8601 duration",
+      "$comment": "Use  format:duration once 09 is released.",
+      "pattern": "^P(?!$)(\\d+(?:\\.\\d+)?Y)?(\\d+(?:\\.\\d+)?M)?(\\d+(?:\\.\\d+)?W)?(\\d+(?:\\.\\d+)?D)?(T(?=\\d)(\\d+(?:\\.\\d+)?H)?(\\d+(?:\\.\\d+)?M)?(\\d+(?:\\.\\d+)?S)?)?$"
     },
     "vtCountryCode": {
       "type": "string",
