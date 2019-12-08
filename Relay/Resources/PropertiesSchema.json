@@ -12,9 +12,9 @@
     "resp_customer":      {"$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)."},
     "billed_customer":    {"$ref": "#/definitions/Customer", "description": "The customer paying for the customer."},
 
-    "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action."},
-    "requested_by":       {"$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},
     "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
+    "requested_by":       {"$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},
+    "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action."},
 
     "org_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
     "dst_phone":          {"$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
@@ -25,10 +25,11 @@
 
     "ab_test":            {"$ref": "#/definitions/ABTest", "description": "AB Test information if a AB test is in progress."},
     "address":            {"$ref": "#/definitions/Address", "description": ""},
-    "correspondence":     {"$ref": "#/definitions/Correspondence", "description": "A correspondence/notification being sent or being received."},
+    "correspondence":     {"$ref": "#/definitions/Correspondence", "description": "A correspondence/standard-notification being sent or received."},
     "equipment":          {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to.", "$comment": "Alternative to the Device type in segment spec that is also used for reporting devices/equipment. Use that for the device sending the event whenever possible."},
     "document":           {"$ref": "#/definitions/Document", "description": "Document associated with the action reported by this event"},
     "issue":              {"$ref": "#/definitions/Issue", "description": "The issue involved in the action."},
+    "message":            {"$ref": "#/definitions/Message", "description": "A message/notification being sent or received."},
     "operator":           {"$ref": "#/definitions/Partner", "description": "The operator that this event message is sent for (Identify virtual operator under Nova)."},
     "provider":           {"$ref": "#/definitions/Partner", "description": "The partner that provides the content, product or service also referenced by the same event."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
@@ -43,7 +44,6 @@
 
     "crm_id":             {"$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the event if it also exists in CEM" },
     "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
-    
     "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
   },
   "required": [],
@@ -85,13 +85,25 @@
       "type": "object",
       "description": "Generic content container for any type of correspondence",
       "properties": {
-        "method":     { "type": "string", "pattern": "^(sms|email|phone|letter|voice)$", "description": "Method used to send the correspondence." },
+        "method":     { "type": "string", "pattern": "^(sms|email|phone|letter|voice|chat)$", "description": "Method used to send the correspondence." },
         "type":       { "type": "string", "minLength": 10, "description": "Correspondence type if this is a standard correspondence ('other' if it is not)." },
         "subject":    { "type": "string", "minLength": 1, "description": "The subject line/title for the correspondence." },
         "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." },
         "media_type": { "type": "string", "description": "Used if the payload content is not text/html" },
         "filename":   { "type": "string", "description": "Used if the content needs to be downloadable as a specific file" },
         "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the correspondence" }
+      },
+      "additionalProperties": true,
+      "required": ["method", "type"],
+      "uniqueItems": true
+    },
+    "Message": {
+      "type": "object",
+      "description": "Generic content container for any simple messaging.",
+      "properties": {
+        "method":     { "type": "string", "pattern": "^(sms|chat)$", "description": "Method used to send the correspondence." },
+        "subject":    { "type": "string", "minLength": 1, "description": "The subject line/title for the correspondence." },
+        "message":    { "type": "string", "description": "The message it self." }
       },
       "additionalProperties": true,
       "required": ["method", "type"],
@@ -109,7 +121,7 @@
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
         "brand":      { "type": "string", "description": "Brand associated with the service" },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
-        "active":     { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" },
+        "duration":   { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" },
         "tags":       { "type": "array", "items": {"type":  "string", "minLength": 2, "description": "A tag describing the service" }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
       "additionalProperties": true,
@@ -143,13 +155,13 @@
         "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
         "crm_id":         { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the carrier" },
         "handle":         { "type": "string", "description": "the slug/handle or alternative ID for the carrier as used publicly/internationally" },
-        "name":           { "type": "string", "description": "The name of the carrier as used by the origin system" },
         "traits":         { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the carrier ot this subsidiary of the carrier" },
+        "category":       { "type": "string", "description": "Product category being viewed" },
+        "tags":           { "type": "array", "items": {"type":  "string", "description": "A tag describing the product"}, "minItems": 1,"description": "Various tags used to classify the product"},
         "parent_partner": { "$ref": "#/definitions/Partner", "description":"The parent carrier of this carrier. (if this is a division or child)" }
       },
-      "required": ["id","name"],
-      "minProperties": 2,
+      "required": ["id"],
       "additionalProperties": true,
       "uniqueItems": true
     },
@@ -314,10 +326,10 @@
       "type": "object",
       "description": "Generic order information",
       "properties": {
-        "id":               { "type": "string", "description": "Unique ID of the order in the internal ERP/Financial system" },
-        "placed_timestamp": { "type": "string", "description": "When was the order placed." },
-        "customer":         { "$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
-        "ordered_by":       { "type": "string", "description": "Name of the employee of the customer making the order" }
+        "id":         { "type": "string", "description": "Unique ID of the order in the internal ERP/Financial system" },
+        "placed":     { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "When was the order placed." },
+        "customer":   { "$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
+        "ordered_by": { "type": "string", "description": "Name of the employee of the customer making the order" }
       },
       "additionalProperties": true,
       "required": ["id"],
@@ -331,6 +343,9 @@
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
         "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
         "name":         { "type": "string", "description": "Name of the rate plan." },
+        "category":     { "type": "string", "description": "Issue Category" },
+        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
+        "description":  { "type": "string", "description": "The main body of text used when defining the issue", "contentEncoding": "base64", "contentMediaType": "text/html" },
         "rates":        { "type": "array", "items": {"$ref": "#/definitions/Rate"},"description": "List of rates belonging to the rate plan.", "$comment": "Not used for generic events" }
       },
       "additionalProperties": true,
@@ -344,7 +359,10 @@
       "properties": {
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
         "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate." },
-        "name":         { "type": "string", "description": "Name of the rate plan." }
+        "name":         { "type": "string", "description": "Name of the rate plan." },
+        "category":     { "type": "string", "description": "Issue Category" },
+        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
+        "description":  { "type": "string", "description": "The main body of text used when defining the issue", "contentEncoding": "base64", "contentMediaType": "text/html" }
       },
       "additionalProperties": true,
       "required": ["id","name"],
@@ -387,10 +405,10 @@
       "type": "object",
       "description": "Used to signal what AB test and AB-test variant were active when the action was performed that led to this event message.",
       "properties": {
-        "experiment_id":    { "type": "string" },
-        "experiment_name":  { "type": "string" },
-        "variation_id":     { "type": "string" },
-        "variation_name":   { "type": "string" }
+        "id":             { "type": "string" },
+        "name":           { "type": "string" },
+        "variation_id":   { "type": "string" },
+        "variation_name": { "type": "string" }
       },
       "additionalProperties": true,
       "required": ["experiment_id","variation_id"]
@@ -400,21 +418,14 @@
       "type": "object",
       "description": "Used to define the CRM entity associated with the parent message entity.",
       "properties": {
-        "id":         { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"" },
-        "type":       { "type": "string", "description": "Regarding: Service, Contact etc."},
-        "label":      { "type": "string", "description": "Readable name/label for the CRM entity"}
+        "crm_id": { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"" },
+        "type":   { "type": "string", "description": "Regarding: Service, Contact etc."},
+        "label":  { "type": "string", "description": "Readable name/label for the CRM entity"}
       },
       "additionalProperties": true,
       "required": ["id","type"],
       "minProperties": 2,
       "uniqueItems": true
-    },
-    "vtCrmID": {
-      "type": "string",
-      "description": "A CRM ID must be a valid guid.",
-      "minLength": 32,
-      "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$",
-      "$comment": "guid"
     }
   }
 }
