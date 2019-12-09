@@ -287,7 +287,7 @@
         "payment_card":   {"$ref": "#/definitions/PaymentCard", "description": "Information regarding a payment card"},
         "authorization":  {"type": "string", "description": "The autherization code for a payment card transaction."},
         "amount":         {"type": "number", "description": "The transaction amount"},
-        "currency_code":  {"type": "string", "description": "The currency used for the transaction", "default": "ISK"},
+        "currency_code":  {"$ref": "./SegmentSchema.json#/definitions/vtCurrencyCode", "description": "The currency used for the transaction", "default": "ISK"},
         "components":     {"type": "array", "items": {"type": "number"}, "description": "If the amount needs to be broken down into components then this structure is used to list them and the component type."}
       },
       "additionalProperties": true,
@@ -304,6 +304,7 @@
     "PaymentCard": {
       "type": "object",
       "description": "Information regarding a payment card",
+      "$comment": "Incomplete",
       "properties": {
         "type":   {"type": "string", "pattern": "^(credit|debit|other)$"},
         "pcn":    {"type": "string", "pattern": "^$", "description": "Card number"},
@@ -317,6 +318,7 @@
     },
     "Content": {
       "type": "object",
+      "$comment": "Incomplete",
       "description": "Used for video/streaming content",
       "properties": {
         
@@ -349,7 +351,7 @@
         "name":         { "type": "string", "description": "Name of the rate plan." },
         "category":     { "type": "string", "description": "Issue Category" },
         "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
-        "description":  { "type": "string", "description": "The main body of text used when defining the issue", "contentEncoding": "base64", "contentMediaType": "text/html" },
+        "description":  { "type": "string", "description": "The main body of text used when defining the issue" },
         "rates":        { "type": "array", "items": {"$ref": "#/definitions/Rate"},"description": "List of rates belonging to the rate plan.", "$comment": "Not used for generic events" }
       },
       "additionalProperties": true,
@@ -366,7 +368,7 @@
         "name":         { "type": "string", "description": "Name of the rate plan." },
         "category":     { "type": "string", "description": "Issue Category" },
         "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
-        "description":  { "type": "string", "description": "The main body of text used when defining the issue", "contentEncoding": "base64", "contentMediaType": "text/html" }
+        "description":  { "type": "string", "description": "The main body of text used when defining the issue"}
       },
       "additionalProperties": true,
       "required": ["id","name"],
