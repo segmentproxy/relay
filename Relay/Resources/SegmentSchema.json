@@ -583,6 +583,10 @@
       "type": "string",
       "pattern": "^[A-Z_]{2,3}$"
     },
+    "vtCurrencyCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
     "vtGeo": {
       "type": "string",
       "description": "Geo string contains two or three numbers Latitude, Longitude and - optionally - Altitude",

@@ -192,6 +192,7 @@
         "brand":      { "type": "string", "description": "The brand of the equipment manufacturer." },
         "make":       { "type": "string", "description": "The make is the primary product name." },
         "model":      { "type": "string", "description": "The model is the secondary product name (variant)." },
+        "firmware":   { "type": "string", "description": "What firmware is running on the equipment." },
         "location":   { "$ref": "#/definitions/Location", "description":"The primary location of the equipment if stationary." }
       },
       "additionalProperties": true,
@@ -202,8 +203,10 @@
       "type": "object",
       "description": "A group of customers maintained to get targeted messages or advertisements across.",
       "properties": {
-        "id":         { "type": "string", "description": "ID/Handle for the target group"},
-        "name":       { "type": "string", "description": "Name of target group"}
+        "id":         { "type": "string", "description": "ID/Handle for the target group."},
+        "name":       { "type": "string", "description": "Name of target group."},
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the target group." },
+        "description": { "type": "string", "description": "A short description of the target group." }
       },
       "additionalProperties": true,
       "required": [],
@@ -283,8 +286,8 @@
         "dst_account":    {"type": "string", "description": "The account that receives the payment."},
         "payment_card":   {"$ref": "#/definitions/PaymentCard", "description": "Information regarding a payment card"},
         "authorization":  {"type": "string", "description": "The autherization code for a payment card transaction."},
-        "amount":         {"type": "string", "description": "The transaction amount"},
-        "currency":       {"type": "string", "description": "The currency used for the transaction", "default": "ISK"},
+        "amount":         {"type": "number", "description": "The transaction amount"},
+        "currency_code":  {"type": "string", "description": "The currency used for the transaction", "default": "ISK"},
         "components":     {"type": "array", "items": {"type": "number"}, "description": "If the amount needs to be broken down into components then this structure is used to list them and the component type."}
       },
       "additionalProperties": true,
