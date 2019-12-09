@@ -11,6 +11,7 @@
     "customer":           {"$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
     "resp_customer":      {"$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)."},
     "billed_customer":    {"$ref": "#/definitions/Customer", "description": "The customer paying for the customer."},
+    "dst_customer":       {"$ref": "#/definitions/Customer", "description": "The target/destination customer for the action being reported."},
 
     "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
     "requested_by":       {"$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},

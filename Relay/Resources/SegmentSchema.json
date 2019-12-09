@@ -394,7 +394,7 @@
         "affiliation":      {"type": "string", "description": "Store or affiliation from which this transaction occurred (e.g. Google Store)."},
         "value":            {"type": "number", "description": "Revenue ($) with discounts and coupons added in. For better flexibility and total control over tracking, we let you decide how to calculate how coupons and discounts are applied."},
         "revenue":          {"type": "number", "description": "Revenue ($) associated with the transaction (excluding shipping and tax)."},
-        "shipping":         {"type": "number", "description": "Shipping cost associated with the transaction.", "$comment": "Here"},
+        "shipping":         {"type": "number", "description": "Shipping cost associated with the transaction."},
         "tax":              {"type": "number", "description": "Total tax associated with the transaction."},
         "discount":         {"type": "number", "description": "Total discount associated with the transaction."},
         "coupon":           {"type": "string", "description": "Transaction coupon redeemed with the transaction."},
@@ -404,7 +404,7 @@
         "wishlist_name":    {"type": "string", "description": "Wishlist name to which the product was added to."},
         "share_via":        {"type": "string", "description": "Method of sharing."},
         "share_message":    {"type": "string", "description": "Message that the sender sent."},
-        "recipient":        {"type": "string", "description": "Review body."},
+        "recipient":        {"type": "string", "description": "The recipient of the share."},
         "review_body":      {"type": "string", "description": "Message that the sender sent."},
         "rating":           {"type": "string", "description": "Review rating."}
       },
