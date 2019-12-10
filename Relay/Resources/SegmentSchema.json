@@ -512,6 +512,7 @@
     },
     "vtEmailAddress": {
       "type": "string",
+      "pattern": "",
       "oneOf": [
         { "format": "email" },
         { "format": "idn-email" }
