@@ -14,13 +14,13 @@
           "description": "Type of message, corresponding to the respective API method"
         },
         "event":        { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment.", "$comment": "Used for Track messages."},
-        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "timestamp":    { "type": "string", "format":"date-time", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
         "properties":   { "$ref": "#/definitions/TrackProperties", "description":"Event properties map" },
-        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "sentAt":       { "type": "string", "format":"date-time", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }},
         "involves":     { "type": "array", "items": { "type": "string" }, "description": "Additional field listing all entities involved in this event (set by the "},
@@ -40,13 +40,13 @@
           "description": "Type of message, corresponding to the respective API method"
         },
         "name":         { "type": "string","description": "Name of the page\nFor example, most sites have a 'Signup' page that can be useful to tag, so you can see users as they move through your funnel.", "$comment": "Used for Page and Screen.", "minLength": 10 },
-        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "timestamp":    { "type": "string", "format":"date-time", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
         "properties":   { "$ref": "#/definitions/PageProperties", "description":"Event properties map" },
-        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "sentAt":       { "type": "string", "format":"date-time", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
@@ -64,13 +64,13 @@
           "description": "Type of message, corresponding to the respective API method"
         },
         "name":         { "type": "string","description": "Name of the page\nFor example, most sites have a 'Signup' page that can be useful to tag, so you can see users as they move through your funnel.", "$comment": "Used for Page and Screen.", "minLength": 10 },
-        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "timestamp":    { "type": "string", "format":"date-time", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "anonymousId":  { "type": "string", "description": "A pseudo-unique substitute for a User ID, for cases when you don't have an absolutely unique identifier. A userId or an anonymousId is required.\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
         "properties":   { "$ref": "#/definitions/ScreenProperties", "description":"Event properties map" },
-        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "sentAt":       { "type": "string", "format":"date-time", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
@@ -87,11 +87,11 @@
           "pattern": "^identify$",
           "description": "Type of message, corresponding to the respective API method"
         },
-        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "timestamp":    { "type": "string", "format":"date-time", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "traits":       { "$ref": "#/definitions/Traits",  "description":"Free-form dictionary of traits of the user, like `email` or `name`.\nSee the [Traits field docs](/docs/connections/spec/identify#traits) for a list of reserved trait names." },
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "sentAt":       { "type": "string", "format":"date-time", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "messageId":    { "type": "string", "description": "Automatically collected by Segment, a unique identifier for each message that lets you find an individual message across the API."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
@@ -109,12 +109,12 @@
           "pattern": "^group$",
           "description": "Type of message, corresponding to the respective API method"
         },
-        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "timestamp":    { "type": "string", "format":"date-time", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "groupId":      { "type": "string", "description": "A unique identifier for the group in your database.\nSee the [Group ID field docs](/docs/connections/spec/group#group-id) for more detail."},
         "traits":       { "$ref": "#/definitions/GroupTraits",  "description":"Free-form dictionary of traits of the group, like `email` or `name`\nSee the [Traits field docs](/docs/connections/spec/group#traits) for a list of reserved trait names" },
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "sentAt":       { "type": "string", "format":"date-time", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
@@ -131,11 +131,11 @@
           "pattern": "^(alias)$",
           "description": "Message sent to link two user IDs together as a single person/customer"
         },
-        "timestamp":    { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "timestamp":    { "type": "string", "format":"date-time", "description": "Timestamp when the message itself took place, defaulted to the current time by the Segment Tracking API\nIt is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string\n\nIf the event just happened, leave it out and we'll use the server's time. If you're importing data from the past, make sure you to provide a `timestamp`.See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "previousId":   { "type": "string", "description": "Previous unique identifier for the user\nSee the [Previous ID field docs](/docs/connections/spec/alias#previous-id) for more detail."},
         "userId":       { "type": "string", "description": "Unique identifier for the user in your database\nA userId or an anonymousId is required\n\nSee the [Identities docs](/docs/connections/spec/identify#identities) for more detail."},
         "context":      { "$ref": "#/definitions/Context", "description": "Dictionary of extra information that provides useful context about a message, but is not directly related to the API call like `ip` address or `locale`\nSee the [Context field docs](/docs/connections/spec/common#context) for more detail."},
-        "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
+        "sentAt":       { "type": "string", "format":"date-time", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
         "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
@@ -153,7 +153,7 @@
         "campaign":   { "$ref": "#/definitions/UTMCode", "description":"Dictionary of information about the campaign that resulted in the API call, containing name, source, medium, term and content <p>This maps directly to the common UTM campaign parameters.</p>" },
         "device":     { "$ref": "#/definitions/Device", "description":"Dictionary of information about the device, containing id, manufacturer, model, name, type and version" },
         "groupId":    { "type": "string", "description":"Group / Account ID. <p>This is useful in B2B use cases where you need to attribute your non-group calls to a company or account. It is relied on by several Customer Success and CRM tools.</p>" },
-        "ip":         { "$ref": "#/definitions/vtIP", "description":"Current user’s IP address" },
+        "ip":         { "type": "string", "oneOf": [ { "format": "ipv4" }, { "format": "ipv6" }], "description":"Current user’s IP address" },
         "library":    { "$ref": "#/definitions/Library", "description":"Dictionary of information about the library making the requests to the API, containing name and version" },
         "locale":     { "type": "string", "description":"Locale string for the current user, for example en-US" },
         "location":   { "$ref": "#/definitions/Location", "description":"Dictionary of information about the user’s current location, containing city, country, latitude, longitude, region and speed" },
@@ -239,7 +239,7 @@
         "latitude":   { "type" : "number", "description": "" },
         "longitude":  { "type" : "number", "description": "" },
         "speed":      { "type" : "number", "description": "" },
-        "hasc":       { "$ref": "#/definitions/vtHASC", "description":"Dictionary of information about the operating system, containing name and version", "$comment": "This is a Nova specific addition to the segment.com spec." }
+        "hasc":       { "type": "string", "minLength": 2, "mazLength": 8, "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$", "description":"A has code for the country, state and region (or any part there of)." }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -305,18 +305,18 @@
         "firstName":    { "type": "string", "description": "First name of a user"},
         "lastName":     { "type": "string", "description": "Last name of a user"},
         "gender":       { "type": "string", "description": "Gender of a user"},
-        "salutation":   {"type": "string", "description": "The salutation used for the customer  <p>Example: “VP of Engineering”</p>"},
+        "salutation":   { "type": "string", "description": "The salutation used for the customer  <p>Example: “VP of Engineering”</p>"},
         "title":        { "type": "string", "description": "Title of a user, usually related to their position at a specific company <p>Example: “VP of Engineering”</p>"},
         "age":          { "type": "number", "description": "Age of a user" },
-        "birthday":     { "$ref": "#/definitions/vtDate",  "description": "" },
-        "email":        { "$ref": "#/definitions/vtEmailAddress", "description": "Email address of a user"},
-        "phone":        { "$ref": "#/definitions/vtPhoneNumber",  "description": "" },
-        "avatar":       { "$ref": "#/definitions/vtUrl", "description": "URL to an avatar image for the user" },
+        "birthday":     { "type": "string", "format":"date",  "description": "" },
+        "email":        { "type": "string", "format": "email", "pattern":"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", "description": "Email address of a user"},
+        "phone":        { "type": "string", "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?$", "description": "" },
+        "avatar":       { "type": "string", "oneOf": [{ "format": "url" },{ "format": "idn-url" }], "description": "URL to an avatar image for the user" },
         "address":      { "$ref": "#/definitions/Address", "description": "Street address of a user optionally containing: city, country, postalCode, state or street" },
         "company":      { "$ref": "#/definitions/Company", "description": "Company the user represents, optionally containing: name (a String), id (a String or Number), industry (a String), employee_count (a Number) or plan (a String)" },
-        "createdAt":    { "$ref": "#/definitions/vtTimestamp", "description": "Date the user’s account was first created <p>We recommend ISO-8601 date strings.</p>"},
+        "createdAt":    { "type": "string", "format":"date-time", "description": "Date the user’s account was first created <p>We recommend ISO-8601 date strings.</p>"},
         "username":     { "type": "string", "description": "User’s username <p> This should be unique to each user, like the usernames of Twitter or GitHub.</p>"},
-        "website":      { "$ref": "#/definitions/vtUrl", "description": "Website of a user"},
+        "website":      { "type":"string", "oneOf": [{ "format": "url" },{ "format": "idn-url" }], "description": "Website of a user"},
         "description":  { "type": "string", "description": "Description of the user"}
       },
       "additionalProperties": true,
@@ -333,8 +333,8 @@
         "employees":    { "type": "integer"},
         "total billed": { "type": "number"},
         "plan":         { "type": "string"},
-        "email":        { "$ref": "#/definitions/vtEmailAddress", "description": "Email address of a user"},
-        "phone":        { "$ref": "#/definitions/vtPhoneNumber",  "description": "" }
+        "email":        { "type": "string", "format": "email", "pattern":"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", "description": "Email address of a user"},
+        "phone":        { "type": "string", "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?$",  "description": "" }
       },
       "additionalProperties": true,
       "patternProperties":{"^[a-z_]{3,}$":{}},
@@ -349,7 +349,7 @@
         "referrer":   { "type" : "string", "description": "" },
         "search":     { "type" : "string", "description": "" },
         "title":      { "type" : "string", "description": "" },
-        "url":        { "$ref": "#/definitions/vtUrl", "description": "" }
+        "url":        { "type" : "string", "oneOf": [{ "format": "url" },{ "format": "idn-url" }], "description": "" }
       },
       "additionalProperties": false,
       "minProperties":1,
@@ -464,89 +464,13 @@
       "required":["product_id"],
       "uniqueItems": true
     },
-    "vtTimestamp": {
-      "type":"string",
-      "format":"date-time"
-    },
-    "vtDate": {
-      "type":"string",
-      "format":"date"
-    },
-    "vtTime": {
-      "type":"string",
-      "format":"time"
-    },
-    "vtUrl": {
-      "type":"string",
-      "oneOf": [
-        { "format": "url" },
-        { "format": "idn-url" }
-      ]
-    },
     "vtPeriod": {
       "type":"object",
       "description": "Used to record a period where something is active or true",
       "properties": {
-        "from":       { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" },
-        "until":      { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" }
+        "from":       { "type": "string", "format":"date-time" },
+        "until":      { "type": "string", "format":"date-time" }
       }
-    },
-    "vtMacAddress": {
-      "type":"string",
-      "pattern":"^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-    },
-    "vtIP": {
-      "type": "string",
-      "oneOf": [
-        { "format": "ipv4" },
-        { "format": "ipv6" }
-      ]      
-    },
-    "vtIPv4": {
-      "type": "string",
-      "format": "ipv4"
-    },
-    "vtIPv6": {
-      "type": "string",
-      "format": "ipv6"
-    },
-    "vtEmailAddress": {
-      "type": "string",
-      "oneOf": [
-        { "format": "email" },
-        { "format": "idn-email" }
-      ]      
-    },
-    "vtPhoneNumber": {
-      "type": "string",
-      "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?$",
-      "description": ""
-    },
-    "vtHostname": {
-      "type": "string",
-      "oneOf": [
-        { "format": "hostname" },
-        { "format": "idn-hostname" }
-      ]      
-    },
-    "vtUUID": {
-      "type": "string",
-      "$comment": "Use  format:duration once 09 is released.",
-      "format": "uuid"
-    },
-    "vtGUID": {
-      "type": "string",
-      "minLength": 32,
-      "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-    },
-    "vtResourceIdentifier": {
-      "type": "string",
-      "oneOf": [
-        { "format": "url" },
-        { "format": "uri-reference" },
-        { "format": "iri" },
-        { "format": "iri-reference" }
-      ]
     },
     "vtValueMap": {
       "type": "array",
@@ -563,34 +487,11 @@
         "maxItems": 2
       }
     },
-    "vtRegExp": {
-      "type": "string",
-      "format": "regex"
-    },
-    "vtHASC": {
-      "type": "string",
-      "minLength": 2, 
-      "mazLength": 8,
-      "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$"
-    },
     "vtDuration": {
-      "type": "string",
       "description": "Used to store ISO 8601 duration",
       "$comment": "Use  format:duration once 09 is released.",
+      "type": "string",
       "pattern": "^P(?!$)(\\d+(?:\\.\\d+)?Y)?(\\d+(?:\\.\\d+)?M)?(\\d+(?:\\.\\d+)?W)?(\\d+(?:\\.\\d+)?D)?(T(?=\\d)(\\d+(?:\\.\\d+)?H)?(\\d+(?:\\.\\d+)?M)?(\\d+(?:\\.\\d+)?S)?)?$"
-    },
-    "vtCountryCode": {
-      "type": "string",
-      "pattern": "^[A-Z_]{2,3}$"
-    },
-    "vtCurrencyCode": {
-      "type": "string",
-      "pattern": "^[A-Z]{3}$"
-    },
-    "vtGeo": {
-      "type": "string",
-      "description": "Geo string contains two or three numbers Latitude, Longitude and - optionally - Altitude",
-      "pattern": "^(\\d*){2,3}$"
     }
   }
 }
