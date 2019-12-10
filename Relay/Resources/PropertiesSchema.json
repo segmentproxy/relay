@@ -6,46 +6,46 @@
   "description": "The properties commonly used by Nova. Additional properties can be added at will",
   "$comment": "Please get familiar with the pest practices sending Business Events using the Segment format before adding arbitrary properties",
   "properties": {
-    "importance":         { "type": "integer", "default": 1, "minimum": 0, "maximum": 5, "description": "How important is this event, How much is the impact of this event", "$comment": "0: logging only, 1:minor impact, 2:some impact, 3:considerable impact, 4:major impact, 5:critical/terminal impact. Also set on the server side for the event-type as a whole."},
+    "importance":         {"type": "integer", "default": 1, "minimum": 0, "maximum": 5, "description": "How important is this event, How much is the impact of this event", "$comment": "0: logging only, 1:minor impact, 2:some impact, 3:considerable impact, 4:major impact, 5:critical/terminal impact. Also set on the server side for the event-type as a whole."},
 
-    "customer":           { "$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
-    "resp_customer":      { "$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)."},
-    "billed_customer":    { "$ref": "#/definitions/Customer", "description": "The customer paying for the customer."},
-    "dst_customer":       { "$ref": "#/definitions/Customer", "description": "The target/destination customer for the action being reported."},
+    "customer":           {"$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
+    "resp_customer":      {"$ref": "#/definitions/Customer", "description": "The customer indirectly involved in the action. (Company for an employee or parent for a child)."},
+    "billed_customer":    {"$ref": "#/definitions/Customer", "description": "The customer paying for the customer."},
+    "dst_customer":       {"$ref": "#/definitions/Customer", "description": "The target/destination customer for the action being reported."},
 
-    "done_by":            { "$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
-    "requested_by":       { "$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},
-    "authored_by":        { "$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action."},
+    "done_by":            {"$ref": "#/definitions/Employee", "description": "The Nova employee initiating the action."},
+    "requested_by":       {"$ref": "#/definitions/Employee", "description": "The Nova employee requesting the action."},
+    "authored_by":        {"$ref": "#/definitions/Employee", "description": "The Nova employee authoring the action."},
 
-    "org_phone":          { "$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
-    "dst_phone":          { "$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
-    "rsp_phone":          { "$ref": "#/definitions/Phone", "description": "The phone number responsible for the action being taken (the parent phone number)."},
+    "org_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number used to start the action (caller or origin of an sms)."},
+    "dst_phone":          {"$ref": "#/definitions/Phone", "description": "The target phone number for the action (being called or items being sent to."},
+    "rsp_phone":          {"$ref": "#/definitions/Phone", "description": "The phone number responsible for the action being taken (the parent phone number)."},
 
-    "org_email_address":  { "type": "string", "format": "email", "pattern":"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", "description": "The email address responsible for starting the action (sent from)."},
-    "dst_email_address":  { "type": "string", "format": "email", "pattern":"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", "description": "The target email address."},
+    "org_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmailAddress", "description": "The email address responsible for starting the action (sent from)."},
+    "dst_email_address":  {"$ref": "./SegmentSchema.json#/definitions/vtEmailAddress", "description": "The target email address."},
 
-    "ab_test":            { "$ref": "#/definitions/ABTest", "description": "AB Test information if a AB test is in progress."},
-    "address":            { "$ref": "#/definitions/Address", "description": ""},
-    "correspondence":     { "$ref": "#/definitions/Correspondence", "description": "A correspondence/standard-notification being sent or received."},
-    "equipment":          { "$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to.", "$comment": "Alternative to the Device type in segment spec that is also used for reporting devices/equipment. Use that for the device sending the event whenever possible."},
-    "document":           { "$ref": "#/definitions/Document", "description": "Document associated with the action reported by this event"},
-    "issue":              { "$ref": "#/definitions/Issue", "description": "The issue involved in the action."},
-    "message":            { "$ref": "#/definitions/Message", "description": "A message/notification being sent or received."},
-    "operator":           { "$ref": "#/definitions/Partner", "description": "The operator that this event message is sent for (Identify virtual operator under Nova)."},
-    "provider":           { "$ref": "#/definitions/Partner", "description": "The partner that provides the content, product or service also referenced by the same event."},
-    "order":              { "$ref": "#/definitions/Order", "description": "The order involved in the action."},
-    "payment":            { "$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
-    "regarding":          { "$ref": "#/definitions/CrmEntity", "description": "The CRM entity that the action is regarding."},
-    "service":            { "$ref": "#/definitions/Service", "description": "The Nova service that the action is regarding."},
-    "rate_plan":          { "$ref": "#/definitions/RatePlan", "description": "Rate plan information"},
-    "rate":               { "$ref": "#/definitions/Rate", "description": "Rate information"},
-    "usage":              { "$ref": "#/definitions/Usage", "description": "Usage summary record"},
-    "old_values":         { "$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list old values when reporting values being changed"},
-    "new_values":         { "$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list new values when reporting values being changed"},
+    "ab_test":            {"$ref": "#/definitions/ABTest", "description": "AB Test information if a AB test is in progress."},
+    "address":            {"$ref": "#/definitions/Address", "description": ""},
+    "correspondence":     {"$ref": "#/definitions/Correspondence", "description": "A correspondence/standard-notification being sent or received."},
+    "equipment":          {"$ref": "#/definitions/Equipment", "description": "The device/equipment that this action responds to.", "$comment": "Alternative to the Device type in segment spec that is also used for reporting devices/equipment. Use that for the device sending the event whenever possible."},
+    "document":           {"$ref": "#/definitions/Document", "description": "Document associated with the action reported by this event"},
+    "issue":              {"$ref": "#/definitions/Issue", "description": "The issue involved in the action."},
+    "message":            {"$ref": "#/definitions/Message", "description": "A message/notification being sent or received."},
+    "operator":           {"$ref": "#/definitions/Partner", "description": "The operator that this event message is sent for (Identify virtual operator under Nova)."},
+    "provider":           {"$ref": "#/definitions/Partner", "description": "The partner that provides the content, product or service also referenced by the same event."},
+    "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
+    "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
+    "regarding":          {"$ref": "#/definitions/CrmEntity", "description": "The CRM entity that the action is regarding."},
+    "service":            {"$ref": "#/definitions/Service", "description": "The Nova service that the action is regarding."},
+    "rate_plan":          {"$ref": "#/definitions/RatePlan", "description": "Rate plan information"},
+    "rate":               {"$ref": "#/definitions/Rate", "description": "Rate information"},
+    "usage":              {"$ref": "#/definitions/Usage", "description": "Usage summary record"},
+    "old_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list old values when reporting values being changed"},
+    "new_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list new values when reporting values being changed"},
 
-    "crm_id":             { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the event if it also exists in CEM" },
-    "legacy_type_id":     { "type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
-    "products":           { "type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
+    "crm_id":             {"$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the event if it also exists in CEM" },
+    "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
+    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
   },
   "required": [],
   "additionalProperties": true,
@@ -55,7 +55,7 @@
       "type": "object",
       "description": "Used to define a phone number with the option of keeping fairly detailed information about it.",
       "properties": {
-        "nr":         { "type": "string", "pattern": "^\\+\\d{1,3}\\s\\d{2,3}\\s\\d{2,3}\\s\\d{4}|^\\+\\d{1,3}\\s\\d{1,14}(\\s\\d{1,13})?|^\\(\\d{3}\\)\\s\\d{3}\\s\\d{4}?$", "description": "The phone number" },
+        "nr":         { "$ref": "./SegmentSchema.json#/definitions/vtPhoneNumber", "description": "The phone number" },
         "type":       { "type": "string", "description": "The type of phone number (landline or mobile)", "pattern": "^(mobile|landline)$" },
         "carrier":    { "$ref": "#/definitions/Partner", "description":"Information about the carrier responsible for the phone number and the home-region for the phone." },
         "location":   { "$ref": "#/definitions/Location", "description":"The current location of the phone number (country or more details)" }
@@ -70,7 +70,7 @@
       "$comment": "Subsystems are only responsible to provide the available 'handle' for a customer and need to rely on de-duplication and correct resolution elsewhere",
       "properties": {
         "id":         { "type": "string", "description": "The ID of the customer used natively in the origin system" },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the customer" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the customer" },
         "ssn":        { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the customer" },
         "spouse_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the spouse" },
         "family_ssn": { "$ref": "#/definitions/SocialSecurityNr", "description":"The social security number of the parent if this customer is a minor" },
@@ -92,7 +92,7 @@
         "payload":    { "type": "string", "contentEncoding": "base64", "contentMediaType": "text/html", "description": "The correspondence it self (the content)." },
         "media_type": { "type": "string", "description": "Used if the payload content is not text/html" },
         "filename":   { "type": "string", "description": "Used if the content needs to be downloadable as a specific file" },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the correspondence" }
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the correspondence" }
       },
       "additionalProperties": true,
       "required": ["method", "type"],
@@ -115,15 +115,15 @@
       "description": "Used to define a telecommunication service referred to by Business Events.",
       "properties": {
         "id":         { "type": "string", "description": "The ID of the telecomm service used by the origin system." },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the service" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service" },
         "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
         "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
         "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(phone|internet|tv|other)$" },
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
         "brand":      { "type": "string", "description": "Brand associated with the service" },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
-        "duration":   { "type": "string", "pattern": "^P(?!$)(\\d+(?:\\.\\d+)?Y)?(\\d+(?:\\.\\d+)?M)?(\\d+(?:\\.\\d+)?W)?(\\d+(?:\\.\\d+)?D)?(T(?=\\d)(\\d+(?:\\.\\d+)?H)?(\\d+(?:\\.\\d+)?M)?(\\d+(?:\\.\\d+)?S)?)?$", "description": "The period that the service is active for the customer/entity involved" },
-        "tags":       { "type": "array",  "items": {"type":  "string", "minLength": 2, "description": "A tag describing the service" }, "minItems": 1, "description": "Various tags used to classify the service"}
+        "duration":   { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" },
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 2, "description": "A tag describing the service" }, "minItems": 1, "description": "Various tags used to classify the service"}
       },
       "additionalProperties": true,
       "required": ["name","type","id"],
@@ -134,7 +134,7 @@
       "description": "Product definition used for other products than telecomm services. (Phones, Routers etc.)",
       "properties": {
         "product_id": { "type": "string", "description": "Product id displayed on the list", "minLength": 1 },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the product" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the product" },
         "sku":        { "type": "string", "description": "Sku of the product being viewed", "minLength": 1 },
         "category":   { "type": "string", "description": "Product category being viewed" },
         "name":       { "type": "string", "description": "Name of the product being viewed","minLength": 1 },
@@ -142,8 +142,8 @@
         "variant":    { "type": "string", "description": "Variant of the product (e.g. Black)","minLength": 1 },
         "price":      { "type": "number", "description": "Price ($) of the product being viewed/acted on" },
         "tags":       { "type": "array", "items": {"type":  "string", "description": "A tag describing the product"}, "minItems": 1,"description": "Various tags used to classify the product"},
-        "url":        { "type": "string", "oneOf": [{ "format": "url" },{ "format": "idn-url" }], "description": "URL of the product page" },
-        "image_url":  { "type": "string", "oneOf": [{ "format": "url" },{ "format": "idn-url" }], "description": "Image url of the product" }
+        "url":        { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "URL of the product page" },
+        "image_url":  { "$ref": "./SegmentSchema.json#/definitions/vtUrl", "description": "Image url of the product" }
       },
       "additionalProperties": true,
       "required": ["id","sku","name"],
@@ -154,7 +154,7 @@
       "description": "Partner definition with heretical structure and location information",
       "properties": {
         "id":             { "type": "string", "minLength": 1, "description": "The ID of the carrier as used by the origin system" },
-        "crm_id":         { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the carrier" },
+        "crm_id":         { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the carrier" },
         "handle":         { "type": "string", "description": "the slug/handle or alternative ID for the carrier as used publicly/internationally" },
         "traits":         { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the carrier using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "location":       { "$ref": "#/definitions/Location", "description":"The primary location of the carrier ot this subsidiary of the carrier" },
@@ -172,9 +172,9 @@
       "$comment": "Used with rate plan and rates",
       "properties": {
         "units":        { "type": "string", "pattern": "^(kbp|)$" },
-        "usage_starts": { "type": "string", "format":"date-time" },
-        "usage_end":    { "type": "string", "format":"date-time" },
-        "duration":     { "$ref": "./SegmentSchema.json#/definitions/vtPeriod" },
+        "usage_starts": { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" },
+        "usage_end":    { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp" },
+        "duration":     { "$ref": "./SegmentSchema.json#/definitions/vtDuration" },
         "use":          { "type": "number" }
       },
       "required": ["units", "volume"],
@@ -185,9 +185,9 @@
       "type": "object",
       "description": "Used to attach activity feed entries to equipment/device and to provide details regarding the equipment/device.",
       "properties": {
-        "mac":        { "type": "string", "pattern":"^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", "description": "The mac address of the equipment." },
-        "ip":         { "type": "string", "oneOf": [ { "format": "ipv4" }, { "format": "ipv6" }], "description": "The current IP address of the equipment." },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the equipment" },
+        "mac":        { "$ref": "./SegmentSchema.json#/definitions/vtMacAddress", "description": "The mac address of the equipment." },
+        "ip":         { "$ref": "./SegmentSchema.json#/definitions/vtIP", "description": "The current IP address of the equipment." },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the equipment" },
         "type":       { "type": "string", "description": "The primary type of equipment", "pattern": "~(router|switch|mobile|phone|computer)$" },
         "brand":      { "type": "string", "description": "The brand of the equipment manufacturer." },
         "make":       { "type": "string", "description": "The make is the primary product name." },
@@ -203,9 +203,9 @@
       "type": "object",
       "description": "A group of customers maintained to get targeted messages or advertisements across.",
       "properties": {
-        "id":          { "type": "string", "description": "ID/Handle for the target group."},
-        "name":        { "type": "string", "description": "Name of target group."},
-        "crm_id":      { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the target group." },
+        "id":         { "type": "string", "description": "ID/Handle for the target group."},
+        "name":       { "type": "string", "description": "Name of target group."},
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the target group." },
         "description": { "type": "string", "description": "A short description of the target group." }
       },
       "additionalProperties": true,
@@ -219,7 +219,7 @@
       "properties": {
         "id":         { "type": "string", "description": "Internal ID of the employee"},
         "user_id":    { "type": "string", "description": "the login user-id of the mepployee" },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The CRM ID of the employee" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the employee" },
         "traits":     { "$ref": "./SegmentSchema.json#/definitions/Traits", "description": "The traits/details of the employee using the segment.com schema for customer traits", "$comment": "The traits term is inherited from segment (details)" },
         "location":   { "$ref": "#/definitions/Location", "description":"The current location of the phone number (country or more details)" }
       },
@@ -232,10 +232,10 @@
       "type": "object",
       "description": "Used to define location of and event or any 'owning' Business Entity. Location can be specified in any detail but country is the minimum requirement.",
       "properties": {
-        "country_code": { "type": "string", "pattern": "^[A-Z_]{2,3}$", "minLength": 2, "maxLength": 3, "description": "ISO acronym for the country" },
+        "country_code": { "$ref": "./SegmentSchema.json#/definitions/vtCountryCode", "pattern":"^[A-Z]{2,3}$", "minLength": 2, "maxLength": 3, "description": "ISO acronym for the country" },
         "postal_code":  { "type": "string", "minLength": 3, "description": "A valid postal code for the area/locality" },
-        "hasc":         { "type": "string", "minLength": 2, "mazLength": 8, "pattern": "^[A-Z]{2}(.[a-z_]{2})?(.[a-z_]{2})?$", "description":"A has code for the country, state and region (or any part there of)." },
-        "geo":          { "type": "string", "pattern": "^((\\d*),?){2,3}$", "description": "Latitute, Longitute for the location"}
+        "hasc":         { "$ref": "./SegmentSchema.json#/definitions/vtHASC", "description": "A has code for the country, state and region (or any part there of)" },
+        "geo":          { "$ref": "./SegmentSchema.json#/definitions/vtGeo", "description": "Latitute, Longitute for the location"}
       },
       "additionalProperties": true,
       "$comment": "The initial two letters for the HASC are the same as the 2 letter ISO country code",
@@ -247,12 +247,12 @@
       "type": "object",
       "description": "Defines Support and service issues",
       "properties": {
-        "id":          { "type": "string", "description": "The internal ID of the issue or the ID used by a SAAS system" },
-        "crm_id":      { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The Nova specific - CRM ID - used to identify the issue" },
-        "name":        { "type": "string", "description": "Title or main subject for the issue" },
-        "type":        { "type": "string", "description": "Type of issue" },
-        "category":    { "type": "string", "description": "Issue Category" },
-        "tags":        { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
+        "id":         { "type": "string", "description": "The internal ID of the issue or the ID used by a SAAS system" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the issue" },
+        "name":       { "type": "string", "description": "Title or main subject for the issue" },
+        "type":       { "type": "string", "description": "Type of issue" },
+        "category":   { "type": "string", "description": "Issue Category" },
+        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
         "description": { "type": "string", "description": "The main body of text used when defining the issue", "contentEncoding": "base64", "contentMediaType": "text/html" }
       },
       "additionalProperties": true,
@@ -265,7 +265,7 @@
       "description": "Information regarding a document that is stored as an attachment",
       "properties": {
         "id":         { "type": "string", "description": "The internal ID for the document as issued by the document management system." },
-        "crm_id":     { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"A Nova specific - CRM ID - used to identify the document." },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"A Nova specific - CRM ID - used to identify the document." },
         "name":       { "type": "string", "description": "The name or main title for the document." },
         "summary":    { "type": "string", "description": "A short summary for the document", "contentEncoding": "base64", "contentMediaType": "text/html" },
         "category":   { "type": "string", "description":  "The main category that the document belongs to"},
@@ -280,15 +280,15 @@
       "type": "object",
       "description": "Information regarding a payment/transaction made to or by Nova",
       "properties": {
-        "id":            { "type": "string", "description": "The ID of the payment in the ERP/Financial system." },
-        "method":        { "type": "string", "pattern": "^(cash|transfer|card|other)$", "description": "Payment method"},
-        "org_account":   { "type": "string", "description": "The account from which the payment was made."},
-        "dst_account":   { "type": "string", "description": "The account that receives the payment."},
-        "payment_card":  { "$ref": "#/definitions/PaymentCard", "description": "Information regarding a payment card"},
-        "authorization": { "type": "string", "description": "The autherization code for a payment card transaction."},
-        "amount":        { "type": "number", "description": "The transaction amount"},
-        "currency_code": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "The currency used for the transaction", "default": "ISK"},
-        "components":    { "type": "array", "items": {"type": "number"}, "description": "If the amount needs to be broken down into components then this structure is used to list them and the component type."}
+        "id":             {"type": "string", "description": "The ID of the payment in the ERP/Financial system." },
+        "method":         {"type": "string", "pattern": "^(cash|transfer|card|other)$", "description": "Payment method"},
+        "org_account":    {"type": "string", "description": "The account from which the payment was made."},
+        "dst_account":    {"type": "string", "description": "The account that receives the payment."},
+        "payment_card":   {"$ref": "#/definitions/PaymentCard", "description": "Information regarding a payment card"},
+        "authorization":  {"type": "string", "description": "The autherization code for a payment card transaction."},
+        "amount":         {"type": "number", "description": "The transaction amount"},
+        "currency_code":  {"$ref": "./SegmentSchema.json#/definitions/vtCurrencyCode", "description": "The currency used for the transaction", "default": "ISK"},
+        "components":     {"type": "array", "items": {"type": "number"}, "description": "If the amount needs to be broken down into components then this structure is used to list them and the component type."}
       },
       "additionalProperties": true,
       "required": ["amount","currency","method"],
@@ -306,11 +306,11 @@
       "description": "Information regarding a payment card",
       "$comment": "Incomplete",
       "properties": {
-        "type":   { "type": "string", "pattern": "^(credit|debit|other)$"},
-        "pcn":    { "type": "string", "pattern": "^$", "description": "Card number"},
-        "pco":    { "type": "string", "pattern": "^$", "description": "Obfuscated Card number"},
-        "pce":    { "type": "string", "pattern": "^$", "description": "Card expires"},
-        "class":  { "type": "string", "pattern": "^(normal|silver|gold|platinum)$"},
+        "type":   {"type": "string", "pattern": "^(credit|debit|other)$"},
+        "pcn":    {"type": "string", "pattern": "^$", "description": "Card number"},
+        "pco":    {"type": "string", "pattern": "^$", "description": "Obfuscated Card number"},
+        "pce":    {"type": "string", "pattern": "^$", "description": "Card expires"},
+        "class":  {"type": "string", "pattern": "^(normal|silver|gold|platinum)$"},
         "issuer": { "$ref": "#/definitions/Partner", "description":"Information about the card issuer." }
       },
       "additionalProperties": false,
@@ -333,7 +333,7 @@
       "description": "Generic order information",
       "properties": {
         "id":         { "type": "string", "description": "Unique ID of the order in the internal ERP/Financial system" },
-        "placed":     { "type": "string", "format":"date-time", "description": "When was the order placed." },
+        "placed":     { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "When was the order placed." },
         "customer":   { "$ref": "#/definitions/Customer", "description": "The customer primarily involved in the action."},
         "ordered_by": { "type": "string", "description": "Name of the employee of the customer making the order" }
       },
@@ -347,7 +347,7 @@
       "description": "A rate plan includes multiple rates. A single rate-plan is typically used for all service use by a single customer.",
       "properties": {
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
-        "crm_id":       { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
+        "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
         "name":         { "type": "string", "description": "Name of the rate plan." },
         "category":     { "type": "string", "description": "Issue Category" },
         "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
@@ -364,7 +364,7 @@
       "description": "Single Rate-type used when calculating usage price.",
       "properties": {
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
-        "crm_id":       { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"The Nova specific - CRM ID - used to identify the rate." },
+        "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate." },
         "name":         { "type": "string", "description": "Name of the rate plan." },
         "category":     { "type": "string", "description": "Issue Category" },
         "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
@@ -397,10 +397,10 @@
       "description": "Generic invoice ID",
       "properties": {
         "id":               { "type": "string", "description": "Internal ID of the invoice as issued by the ERP/Financial system" },
-        "issued_date":      { "type": "string", "format":"date-time", "description": "" },
-        "created_date":     { "type": "string", "format":"date-time", "description": "" },
-        "payment_due_date": { "type": "string", "format":"date-time", "description": "" },
-        "due_date":         { "type": "string", "format":"date-time", "description": "" }
+        "issued_date":      { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "" },
+        "created_date":     { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "" },
+        "payment_due_date": { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "" },
+        "due_date":         { "$ref": "./SegmentSchema.json#/definitions/vtTimestamp", "description": "" }
       },
       "additionalProperties": true,
       "required": ["id","issued_date"],
@@ -424,7 +424,7 @@
       "type": "object",
       "description": "Used to define the CRM entity associated with the parent message entity.",
       "properties": {
-        "crm_id": { "type": "string", "minLength": 32, "pattern": "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$", "description":"" },
+        "crm_id": { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"" },
         "type":   { "type": "string", "description": "Regarding: Service, Contact etc."},
         "label":  { "type": "string", "description": "Readable name/label for the CRM entity"}
       },
