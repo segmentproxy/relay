@@ -118,7 +118,7 @@
         "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service" },
         "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
         "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
-        "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(phone|internet|tv|other)$" },
+        "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(landline|mobile|internet|vip-internet|tv|other)$" },
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
         "brand":      { "type": "string", "description": "Brand associated with the service" },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
@@ -328,6 +328,19 @@
       "minProperties": 2,
       "uniqueItems": true
     },
+    "Opportunity": {
+      "type": "object",
+      "description": "Opportunity",
+      "properties": {
+        "id":           { "type": "string", "description": "The unique id of the opportunity is the message_id of the original event." },
+        "type":         { "type": "string", "patter": "^(sales|service|operation|)$" },
+        "description":  { "type": "string", "description": "The main body of text used when defining the issue" }
+      },
+      "additionalProperties": true,
+      "required": ["id"],
+      "minProperties": 2,
+      "uniqueItems": true
+    },
     "Order": {
       "type": "object",
       "description": "Generic order information",
@@ -379,14 +392,15 @@
       "type": "object",
       "description": "Contains human readable information regarding a address of a building/place. The `location` structure is used for codes and coordinates of the address. ",
       "properties": {
-        "street":       { "type" : "string", "description": "Name of street and number of building" },
-        "street2":      { "type" : "string", "description": "Location within building" },
-        "city":         { "type" : "string", "description": "Name ot the city" },
-        "country":      { "type" : "string", "description": "Name of the country" },
-        "postal_code":  { "type" : "string", "description": "Postal code that the building/street is in " },
-        "po_box":       { "type" : "string", "description": "PO box if the location is a post office delivery box" },
-        "state":        { "type" : "string", "description": "Name of the state that the city belongs to" },
-        "location":     { "$ref": "#/definitions/Location", "description":"Code and Geo location for the location of the address" }
+        "street":       { "type" : "string", "description": "Name of street and number of building." },
+        "street2":      { "type" : "string", "description": "Location within building." },
+        "apartment_id": { "type" : "string", "description": "A unique ID of the apartment unit." },
+        "city":         { "type" : "string", "description": "Name ot the city." },
+        "country":      { "type" : "string", "description": "Name of the country." },
+        "postal_code":  { "type" : "string", "description": "Postal code that the building/street is in." },
+        "po_box":       { "type" : "string", "description": "PO box if the location is a post office delivery box." },
+        "state":        { "type" : "string", "description": "Name of the state that the city belongs to." },
+        "location":     { "$ref": "#/definitions/Location", "description":"Code and Geo location for the location of the address." }
       },
       "required": ["country","postal_code","city","street"],
       "additionalProperties": true,
