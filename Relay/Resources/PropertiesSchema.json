@@ -45,7 +45,8 @@
 
     "crm_id":             {"$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the event if it also exists in CEM" },
     "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
-    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}}
+    "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
+    "opportunities":      {"type": "array", "items": {"$ref": "#/definitions/Opportunity"},"description": "The opportunity/ies being reported or acted on."}
   },
   "required": [],
   "additionalProperties": true,
@@ -330,7 +331,8 @@
     },
     "Opportunity": {
       "type": "object",
-      "description": "Opportunity",
+      "description": "Opportunity information",
+      "$comment": "Currently missing value and effort estimates",
       "properties": {
         "id":           { "type": "string", "description": "The unique id of the opportunity is the message_id of the original event reporting it." },
         "type":         { "type": "string", "patter": "^(sales|service|operation|auditing|observation|other)$" },
@@ -340,7 +342,8 @@
         "category":     { "type": "string", "description": "Issue Category" },
         "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
         "description":  { "type": "string", "description": "The main body of text used when defining the issue" },
-        "seized":       { "type":  "boolean", "default": false, "description": "Has the opportunity been seized" }
+        "seized":       { "type":  "boolean", "default": false, "description": "Has the opportunity been seized" },
+        "outcome":      { "type":  "string", "patters": "^(unknown|success|failure|mixed)$" }
       },
       "additionalProperties": true,
       "required": ["id","type"],
