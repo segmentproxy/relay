@@ -118,7 +118,7 @@
         "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service" },
         "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
         "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
-        "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(landline|mobile|internet|vip-internet|tv|other)$" },
+        "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(landline|mobile|fiber|vip-fiber|tv|other)$" },
         "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
         "brand":      { "type": "string", "description": "Brand associated with the service" },
         "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
@@ -332,13 +332,18 @@
       "type": "object",
       "description": "Opportunity",
       "properties": {
-        "id":           { "type": "string", "description": "The unique id of the opportunity is the message_id of the original event." },
-        "type":         { "type": "string", "patter": "^(sales|service|operation|)$" },
-        "description":  { "type": "string", "description": "The main body of text used when defining the issue" }
+        "id":           { "type": "string", "description": "The unique id of the opportunity is the message_id of the original event reporting it." },
+        "type":         { "type": "string", "patter": "^(sales|service|operation|auditing|observation|other)$" },
+        "subject":      { "type": "string", "description": "A short description of the opportunity" },
+        "importance":   { "type": "integer", "minimum": 0, "maximum": 5, "description": "How important is this opportunity" },
+        "ttl":          { "$ref": "./SegmentSchema.json#/definitions/vtDuration", "description": "For how long is this opportunity valid/relevant" },
+        "category":     { "type": "string", "description": "Issue Category" },
+        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
+        "description":  { "type": "string", "description": "The main body of text used when defining the issue" },
+        "seized":       { "type":  "boolean", "default": false, "description": "Has the opportunity been seized" }
       },
       "additionalProperties": true,
-      "required": ["id"],
-      "minProperties": 2,
+      "required": ["id","type"],
       "uniqueItems": true
     },
     "Order": {
@@ -394,13 +399,15 @@
       "properties": {
         "street":       { "type" : "string", "description": "Name of street and number of building." },
         "street2":      { "type" : "string", "description": "Location within building." },
-        "apartment_id": { "type" : "string", "description": "A unique ID of the apartment unit." },
         "city":         { "type" : "string", "description": "Name ot the city." },
         "country":      { "type" : "string", "description": "Name of the country." },
         "postal_code":  { "type" : "string", "description": "Postal code that the building/street is in." },
         "po_box":       { "type" : "string", "description": "PO box if the location is a post office delivery box." },
         "state":        { "type" : "string", "description": "Name of the state that the city belongs to." },
-        "location":     { "$ref": "#/definitions/Location", "description":"Code and Geo location for the location of the address." }
+        "location":     { "$ref": "#/definitions/Location", "description":"Code and Geo location for the location of the address." },
+        "apartment_id": { "type" : "string", "description": "A unique ID of the apartment unit." },
+        "category":     { "type": "string", "description": "Issue Category" },
+        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"}
       },
       "required": ["country","postal_code","city","street"],
       "additionalProperties": true,

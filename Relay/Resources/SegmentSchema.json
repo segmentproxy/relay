@@ -273,11 +273,14 @@
       "type":"object",
       "description":"",
       "properties": {
-        "city":       { "type" : "string", "description": "Name ot the city" },
-        "country":    { "type" : "string", "description": "Name of the country" },
-        "postalCode": { "type" : "string", "description": "Postal code that the building/streat is in " },
-        "street":     { "type" : "string", "description": "Name of street and number of building" },
-        "state":      { "type" : "string", "description": "Name of the state that the city belongs to" }
+        "city":         { "type" : "string", "description": "Name ot the city" },
+        "country":      { "type" : "string", "description": "Name of the country" },
+        "postalCode":   { "type" : "string", "description": "Postal code that the building/streat is in " },
+        "street":       { "type" : "string", "description": "Name of street and number of building" },
+        "state":        { "type" : "string", "description": "Name of the state that the city belongs to" },
+        "apartment_id": { "type" : "string", "description": "A unique ID of the apartment unit." },
+        "category":     { "type": "string", "description": "Issue Category" },
+        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"}
       },
       "additionalProperties": false,
       "minProperties":1,
