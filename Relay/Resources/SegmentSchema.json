@@ -22,9 +22,7 @@
         "properties":   { "$ref": "#/definitions/TrackProperties", "description":"Event properties map" },
         "sentAt":       { "$ref": "#/definitions/vtTimestamp", "description": "Timestamp of when a message is sent to Segment, used for clock skew correction\nIt is set automatically by the Segment tracking libraries. It is an [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601) date string. See the [Timestamps fields docs](/docs/connections/spec/common#timestamps) for more detail."},
         "version":      { "type": "string","description": "Version of the Tracking API that received the message, automatically set by Segment."},
-        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }},
-        "involves":     { "type": "array", "items": { "type": "string" }, "description": "Additional field listing all entities involved in this event (set by the)", "$comment": "This is a non standard segment schema field"},
-        "$schema":      { "type": "string", "$comment": "Included so json files can be edited with schema support"}
+        "integrations": { "type": "array", "items": { "$ref": "#/definitions/Integration" }}
       },
       "required": ["type", "event", "timestamp","messageId", "context", "version"],
       "additionalProperties": false
@@ -164,7 +162,8 @@
         "referer":    { "$ref": "#/definitions/Referrer", "description":"Dictionary of information about the way the user was referred to the website or app, containing type, name, url and link" },
         "screen":     { "$ref": "#/definitions/Screen", "description":"Dictionary of information about the device’s screen, containing density, height and width" },
         "timezone":   { "type": "string", "description":"Timezones are sent as tzdata strings to add user timezone information which might be stripped from the timestamp <p>Ex: America/New_York</p>" },
-        "traits":     { "$ref": "#/definitions/Traits",  "description":"Dictionary of traits of the current user <p>This is useful in cases where you need to track an event, but also associate information from a previous identify call. You should fill this object the same way you would fill traits in an identify call.</p>" }
+        "traits":     { "$ref": "#/definitions/Traits",  "description":"Dictionary of traits of the current user <p>This is useful in cases where you need to track an event, but also associate information from a previous identify call. You should fill this object the same way you would fill traits in an identify call.</p>" },
+        "involves":   { "type": "array", "items": { "$ref": "#/definitions/EntityReference" }, "description": "Additional field listing all entities involved in this event (set by the)", "$comment": "This is a non standard segment schema field"}
       },
       "required": ["active", "app", "library"],
       "patternProperties":{"^[a-z_]{3,}$": {}},
@@ -465,6 +464,20 @@
       },
       "additionalProperties": true,
       "required":["product_id"],
+      "uniqueItems": true
+    },
+    "EntityReference": {
+      "type": "object",
+      "description": "Used to define any entity with local IDs and CRM ids associated with an action/event.",
+      "$comment": "Requires type and either ID or CRM id but accepts all three",
+      "properties": {
+        "type":   { "type": "string", "pattern": "^(RatePLan|Service|Account|Contact|Email|PhoneNumber)$", "description": "What is the concrete type of the entity beind references"},
+        "id":     { "type": "string", "description": "Local/System ID for the entity (Not the CRM ID)" },
+        "crm_id": { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM Id for the entity" }
+      },
+      "additionalProperties": false,
+      "required": ["id"],
+      "minLength": 2,
       "uniqueItems": true
     },
     "vtTimestamp": {

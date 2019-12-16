@@ -35,7 +35,6 @@
     "provider":           {"$ref": "#/definitions/Partner", "description": "The partner that provides the content, product or service also referenced by the same event."},
     "order":              {"$ref": "#/definitions/Order", "description": "The order involved in the action."},
     "payment":            {"$ref": "#/definitions/Payment", "description": "The payment involved in the action."},
-    "regarding":          {"$ref": "#/definitions/CrmEntity", "description": "The CRM entity that the action is regarding."},
     "service":            {"$ref": "#/definitions/Service", "description": "The Nova service that the action is regarding."},
     "rate_plan":          {"$ref": "#/definitions/RatePlan", "description": "Rate plan information"},
     "rate":               {"$ref": "#/definitions/Rate", "description": "Rate information"},
@@ -43,7 +42,7 @@
     "old_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list old values when reporting values being changed"},
     "new_values":         {"$ref": "./SegmentSchema.json#/definitions/vtValueMap", "description": "Used to list new values when reporting values being changed"},
 
-    "crm_id":             {"$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the event if it also exists in CEM" },
+    "crm_id":             {"$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of this event if it also exists in CEM" },
     "legacy_type_id":     {"type": "string", "description": "If this event had an ID then this is the legacy ID for the the event/event-type"},
     "products":           {"type": "array", "items": {"$ref": "./SegmentSchema.json#/definitions/ProductLine"}},
     "opportunities":      {"type": "array", "items": {"$ref": "#/definitions/Opportunity"},"description": "The opportunity/ies being reported or acted on."}
@@ -113,21 +112,14 @@
     },
     "Service": {
       "type": "object",
-      "description": "Used to define a telecommunication service referred to by Business Events.",
+      "description": "Used to define a individual telecommunication service that binds a customer, a service category and a RatePlan ",
       "properties": {
-        "id":         { "type": "string", "description": "The ID of the telecomm service used by the origin system." },
-        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service" },
-        "sku":        { "type": "string", "description": "The publicly visible ID for the telcom service (Customer facing)." },
-        "name":       { "type": "string", "minLength": 1, "description": "The name of the telcom service" },
-        "type":       { "type": "string", "description": "The core type of the telecomm service ", "pattern": "^(landline|mobile|fiber|vip-fiber|tv|other)$" },
-        "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
-        "brand":      { "type": "string", "description": "Brand associated with the service" },
-        "category":   { "type": "string", "description": "Product/Service category that the service belongs to" },
-        "duration":   { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" },
-        "tags":       { "type": "array", "items": {"type":  "string", "minLength": 2, "description": "A tag describing the service" }, "minItems": 1, "description": "Various tags used to classify the service"}
+        "id":         { "type": "string", "description": "The ID of the telecomm service used by the origin system. (Individual subscription ID)" },
+        "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service (Individual subscription ID)" },
+        "duration":   { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" }
       },
       "additionalProperties": true,
-      "required": ["name","type","id"],
+      "required": ["id"],
       "uniqueItems": true
     },
     "Product": {
@@ -369,10 +361,16 @@
       "properties": {
         "id":           { "type": "string", "description": "Internal ID f the rate plan." },
         "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate plan." },
+        "type":         { "type": "string", "description": "The core type of the telecom service offered by the rate plane", "pattern": "^(landline|mobile|fiber|vip-fiber|tv|other)$" },
         "name":         { "type": "string", "description": "Name of the rate plan." },
+
+        "sku":        { "type": "string", "description": "The publicly visible ID for the rate plan." },
+        "variant":    { "type": "string", "description": "The variant of the service (Rate plane or main distinction)"},
+        "brand":      { "type": "string", "description": "Brand associated with the service" },
+
         "category":     { "type": "string", "description": "Issue Category" },
-        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
-        "description":  { "type": "string", "description": "The main body of text used when defining the issue" },
+        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the rate plan"},
+        "description":  { "type": "string", "description": "The main body of text used when defining the rate plan" },
         "rates":        { "type": "array", "items": {"$ref": "#/definitions/Rate"},"description": "List of rates belonging to the rate plan.", "$comment": "Not used for generic events" }
       },
       "additionalProperties": true,
@@ -382,14 +380,12 @@
     },
     "Rate": {
       "type": "object",
-      "description": "Single Rate-type used when calculating usage price.",
+      "description": "Single rate used when calculating usage price according to a specific rate plan.",
       "properties": {
-        "id":           { "type": "string", "description": "Internal ID f the rate plan." },
+        "id":           { "type": "string", "description": "Internal ID f the rate." },
         "crm_id":       { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The Nova specific - CRM ID - used to identify the rate." },
-        "name":         { "type": "string", "description": "Name of the rate plan." },
-        "category":     { "type": "string", "description": "Issue Category" },
-        "tags":         { "type": "array", "items": {"type":  "string", "minLength": 3 }, "minItems": 1, "description": "Tags assigned to the issue"},
-        "description":  { "type": "string", "description": "The main body of text used when defining the issue"}
+        "name":         { "type": "string", "description": "Name of the rate." },
+        "description":  { "type": "string", "description": "The main body of text used when defining the rate"}
       },
       "additionalProperties": true,
       "required": ["id","name"],
@@ -443,19 +439,6 @@
       "additionalProperties": true,
       "required": ["experiment_id","variation_id"]
     },
-    "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"},
-    "CrmEntity": {
-      "type": "object",
-      "description": "Used to define the CRM entity associated with the parent message entity.",
-      "properties": {
-        "crm_id": { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"" },
-        "type":   { "type": "string", "description": "Regarding: Service, Contact etc."},
-        "label":  { "type": "string", "description": "Readable name/label for the CRM entity"}
-      },
-      "additionalProperties": true,
-      "required": ["id","type"],
-      "minProperties": 2,
-      "uniqueItems": true
-    }
+    "SocialSecurityNr": {"type": "string", "minLength": 10, "maxLength": 10, "pattern": "^([0-9]{6})(-?)([0-9]{3})[890]$"}
   }
 }
