@@ -116,7 +116,7 @@
       "properties": {
         "id":         { "type": "string", "description": "The ID of the telecomm service used by the origin system. (Individual subscription ID)" },
         "crm_id":     { "$ref": "./SegmentSchema.json#/definitions/vtGUID", "description":"The CRM ID of the service (Individual subscription ID)" },
-        "duration":   { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" }
+        "period":     { "$ref": "./SegmentSchema.json#/definitions/vtPeriod", "description": "The period that the service is active for the customer/entity involved" }
       },
       "additionalProperties": true,
       "required": ["id"],
